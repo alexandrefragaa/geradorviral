@@ -1,0 +1,62 @@
+{
+  "peter_griffin": {
+    "nome": "Peter Griffin",
+    "referenceId": ""
+  },
+  "homer_simpson": {
+    "nome": "Homer Simpson",
+    "referenceId": ""
+  },
+  "stan_smith": {
+    "nome": "Stan Smith",
+    "referenceId": ""
+  },
+  "cartman": {
+    "nome": "Cartman",
+    "referenceId": ""
+  },
+  "stewie": {
+    "nome": "Stewie Griffin",
+    "referenceId": ""
+  },
+  "angelica": {
+    "nome": "Angelica Pickles",
+    "referenceId": ""
+  },
+  "pernalonga": {
+    "nome": "Pernalonga",
+    "referenceId": ""
+  },
+  "rick_sanchez": {
+    "nome": "Rick Sanchez",
+    "referenceId": ""
+  },
+  "kronk": {
+    "nome": "Kronk",
+    "referenceId": ""
+  },
+  "bob_esponja": {
+    "nome": "Bob Esponja",
+    "referenceId": ""
+  },
+  "patrick": {
+    "nome": "Patrick Estrela",
+    "referenceId": ""
+  },
+  "gaguinho": {
+    "nome": "Gaguinho (Porco Pica-Pau)",
+    "referenceId": ""
+  },
+  "gumball": {
+    "nome": "Gumball",
+    "referenceId": ""
+  },
+  "darwin": {
+    "nome": "Darwin",
+    "referenceId": ""
+  },
+  "dexter": {
+    "nome": "Dexter",
+    "referenceId": ""
+  }
+}

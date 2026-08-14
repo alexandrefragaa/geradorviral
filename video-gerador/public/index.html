@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gerador de Vídeo Viral</title>
+<style>
+  :root { --bg: #0f0f14; --card: #17171f; --accent: #ff3b6b; --text: #f2f2f5; --muted: #8a8a9a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, Segoe UI, Roboto, sans-serif; padding: 24px; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  p.sub { color: var(--muted); margin-top: 0; margin-bottom: 24px; font-size: 14px; }
+  .card { background: var(--card); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; margin-top: 14px; }
+  input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #2a2a35; background: #0f0f14; color: var(--text); font-size: 14px; }
+  textarea { min-height: 90px; resize: vertical; }
+  button { margin-top: 18px; width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--accent); color: white; font-weight: 600; font-size: 15px; cursor: pointer; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.secondary { background: #2a2a35; }
+  #status { margin-top: 12px; font-size: 13px; color: var(--muted); white-space: pre-wrap; }
+  video { width: 100%; border-radius: 12px; margin-top: 14px; }
+  .row { display: flex; gap: 10px; }
+  .row > div { flex: 1; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #2a2a35; background: var(--card); color: var(--muted); cursor: pointer; font-size: 14px; font-weight: 600; }
+  .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .trend-card { background: #0f0f14; border-radius: 10px; overflow: hidden; border: 1px solid #2a2a35; }
+  .trend-card img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+  .trend-card .info { padding: 8px 10px; }
+  .trend-card .titulo { font-size: 12px; line-height: 1.3; margin: 0 0 4px; height: 32px; overflow: hidden; }
+  .trend-card .meta { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; }
+  .updated-at { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+</style>
+</head>
+<body>
+  <h1>🎬 Gerador de Vídeo Viral</h1>
+  <p class="sub">Sobe o personagem, escolhe o estilo, gera o roteiro e renderiza o vídeo.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="gerar">Gerar vídeo</button>
+    <button class="tab-btn" data-tab="trends">🔥 Trends</button>
+  </div>
+
+  <div class="tab-panel active" id="panel-gerar">
+  <div class="card">
+    <label>Personagem</label>
+    <div class="row">
+      <div>
+        <select id="characterKey"></select>
+      </div>
+      <div>
+        <input type="text" id="outfit" placeholder="roupa específica (opcional, ex: jaleco de cientista)" />
+      </div>
+    </div>
+    <p class="sub" style="margin:6px 0 0">A imagem do personagem é gerada automaticamente com base
+    no tema/roteiro. Prefere subir sua própria imagem? <label style="display:inline;color:var(--accent);cursor:pointer">
+      <input type="checkbox" id="useUpload" style="width:auto" /> usar upload manual</label></p>
+    <input type="file" id="character" accept="image/*" style="display:none;margin-top:8px" />
+
+    <div class="row">
+      <div>
+        <label>Estilo do canal</label>
+        <select id="channelKey"></select>
+      </div>
+      <div>
+        <label>Voz do personagem (Fish Audio)</label>
+        <select id="voiceKey"></select>
+      </div>
+    </div>
+
+    <label>Tema do vídeo</label>
+    <input type="text" id="topic" placeholder="ex: novo golpe do pix, algoritmo do tiktok..." />
+
+    <div class="row">
+      <div>
+        <label>Duração alvo</label>
+        <select id="targetDuration">
+          <option value="60" selected>60s+ (monetizável no TikTok)</option>
+          <option value="45">45s (só alcance, não monetiza)</option>
+        </select>
+      </div>
+      <div>
+        <label>Variações do roteiro (teste de formato)</label>
+        <select id="variacoes">
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="secondary" id="btnScript">1. Gerar roteiro</button>
+
+    <label>Roteiro (revise/edite antes de renderizar)</label>
+    <textarea id="script"></textarea>
+
+    <div class="row">
+      <div>
+        <label>Fundos (nomes dos arquivos em /backgrounds, separados por vírgula)</label>
+        <input type="text" id="backgrounds" placeholder="parkour1.mp4, minecraft2.mp4" />
+      </div>
+      <div>
+        <label>Música (opcional, em /music)</label>
+        <input type="text" id="music" placeholder="trilha1.mp3" />
+      </div>
+    </div>
+
+    <button id="btnGenerate">2. Gerar vídeo final</button>
+    <div id="status"></div>
+    <video id="preview" controls style="display:none"></video>
+
+    <div id="publishBox" style="display:none;margin-top:16px;border-top:1px solid #2a2a35;padding-top:16px">
+      <label>Publicar em</label>
+      <div class="row">
+        <div><label style="display:flex;align-items:center;gap:6px;color:var(--text)"><input type="checkbox" class="pubPlatform" value="youtube" style="width:auto" /> YouTube Shorts</label></div>
+        <div><label style="display:flex;align-items:center;gap:6px;color:var(--text)"><input type="checkbox" class="pubPlatform" value="tiktok" style="width:auto" /> TikTok</label></div>
+        <div><label style="display:flex;align-items:center;gap:6px;color:var(--text)"><input type="checkbox" class="pubPlatform" value="instagram" style="width:auto" /> Instagram</label></div>
+      </div>
+      <label>Título/legenda</label>
+      <input type="text" id="pubCaption" placeholder="título ou legenda do post" />
+      <button class="secondary" id="btnPublish">3. Publicar</button>
+      <div id="pubStatus" class="updated-at"></div>
+    </div>
+  </div>
+  </div>
+
+  <div class="tab-panel" id="panel-trends">
+    <div class="card">
+      <div class="updated-at" id="trendsUpdated">Carregando...</div>
+      <p class="sub" style="margin:0 0 10px">
+        YouTube, últimos 30 dias, ordenado por visualizações. Atualiza sozinho a cada 5min.
+        <br/><em>TikTok não tem API pública de tendências pra qualquer dev — esse painel fica
+        só com YouTube por enquanto.</em>
+      </p>
+      <div class="trend-grid" id="trendGrid"></div>
+    </div>
+  </div>
+
+<script>
+// --- Tabs ---
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'trends') loadTrends();
+  });
+});
+
+// --- Trends ---
+function formatViews(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+  return String(n);
+}
+
+async function loadTrends() {
+  const grid = document.getElementById('trendGrid');
+  const updated = document.getElementById('trendsUpdated');
+  try {
+    const res = await fetch('/trends');
+    const data = await res.json();
+    if (data.erro) {
+      updated.textContent = 'Erro: ' + data.erro;
+      return;
+    }
+    const dt = data.atualizadoEm ? new Date(data.atualizadoEm).toLocaleTimeString('pt-BR') : '—';
+    updated.textContent = `Atualizado às ${dt} · ${data.youtube.length} vídeos`;
+    grid.innerHTML = data.youtube.map(v => `
+      <a class="trend-card" href="${v.url}" target="_blank" style="text-decoration:none;color:inherit">
+        <img src="${v.thumbnail}" loading="lazy" />
+        <div class="info">
+          <p class="titulo">${v.titulo}</p>
+          <div class="meta"><span>${v.canal}</span><span>👁 ${formatViews(v.visualizacoes)}</span></div>
+        </div>
+      </a>
+    `).join('');
+  } catch (e) {
+    updated.textContent = 'Erro ao carregar: ' + e.message;
+  }
+}
+// re-checa a cada 1min (o dado em si só muda a cada 5min no servidor)
+setInterval(() => {
+  if (document.getElementById('panel-trends').classList.contains('active')) loadTrends();
+}, 60 * 1000);
+
+async function loadStyles() {
+  const res = await fetch('/styles');
+  const styles = await res.json();
+  const select = document.getElementById('channelKey');
+  select.innerHTML = styles.map(s => `<option value="${s.key}">${s.personagem} — ${s.arquetipo}</option>`).join('');
+}
+loadStyles();
+
+async function loadVoices() {
+  const res = await fetch('/voices');
+  const list = await res.json();
+  const select = document.getElementById('voiceKey');
+  select.innerHTML = list.map(v => `<option value="${v.key}">${v.nome}</option>`).join('');
+}
+loadVoices();
+
+async function loadCharacters() {
+  const res = await fetch('/characters');
+  const list = await res.json();
+  const select = document.getElementById('characterKey');
+  const grupos = {};
+  list.forEach(c => { (grupos[c.arquetipo] = grupos[c.arquetipo] || []).push(c); });
+  select.innerHTML = Object.entries(grupos).map(([arq, chars]) =>
+    `<optgroup label="${arq}">${chars.map(c => `<option value="${c.key}">${c.nome}</option>`).join('')}</optgroup>`
+  ).join('');
+}
+loadCharacters();
+
+document.getElementById('useUpload').addEventListener('change', (e) => {
+  document.getElementById('character').style.display = e.target.checked ? 'block' : 'none';
+  document.getElementById('characterKey').disabled = e.target.checked;
+  document.getElementById('outfit').disabled = e.target.checked;
+});
+
+let currentJobId = null;
+
+document.getElementById('btnScript').addEventListener('click', async () => {
+  const channelKey = document.getElementById('channelKey').value;
+  const topic = document.getElementById('topic').value;
+  const targetDuration = Number(document.getElementById('targetDuration').value);
+  const variacoes = Number(document.getElementById('variacoes').value);
+  const status = document.getElementById('status');
+  if (!topic) return alert('Digita o tema do vídeo');
+  status.textContent = 'Gerando roteiro...';
+  try {
+    const res = await fetch('/generate-script', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channelKey, topic, targetDuration, variacoes }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    if (Array.isArray(data.script)) {
+      // várias variações: mostra a primeira no campo e o resto no status pra comparar
+      document.getElementById('script').value = data.script[0];
+      status.textContent = 'Gerou ' + data.script.length + ' variações. Variação 1 está no campo.\n\n---\n\n' +
+        data.script.map((s, i) => `VARIAÇÃO ${i + 1}:\n${s}`).join('\n\n---\n\n');
+    } else {
+      document.getElementById('script').value = data.script;
+      status.textContent = 'Roteiro gerado. Revise e ajuste se quiser.';
+    }
+  } catch (e) {
+    status.textContent = 'Erro: ' + e.message;
+  }
+});
+
+document.getElementById('btnGenerate').addEventListener('click', async () => {
+  const status = document.getElementById('status');
+  const preview = document.getElementById('preview');
+  const useUpload = document.getElementById('useUpload').checked;
+  const characterFile = document.getElementById('character').files[0];
+  const characterKey = document.getElementById('characterKey').value;
+  const outfit = document.getElementById('outfit').value;
+  const voiceKey = document.getElementById('voiceKey').value;
+  const backgrounds = document.getElementById('backgrounds').value;
+  const music = document.getElementById('music').value;
+  const script = document.getElementById('script').value;
+
+  if ((useUpload && !characterFile) || !voiceKey || !backgrounds || !script) {
+    return alert('Preenche: personagem, voz, fundos e roteiro (gere no passo 1 ou escreva o seu)');
+  }
+
+  const form = new FormData();
+  if (useUpload) {
+    form.append('character', characterFile);
+  } else {
+    form.append('characterKey', characterKey);
+    if (outfit) form.append('outfit', outfit);
+  }
+  form.append('voiceKey', voiceKey);
+  form.append('backgrounds', backgrounds);
+  if (music) form.append('music', music);
+  form.append('script', script);
+
+  status.textContent = 'Renderizando... isso pode levar um tempo.';
+  preview.style.display = 'none';
+  document.getElementById('publishBox').style.display = 'none';
+  document.getElementById('btnGenerate').disabled = true;
+
+  try {
+    const res = await fetch('/generate', { method: 'POST', body: form });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    status.textContent = 'Pronto! ✅';
+    preview.src = data.videoUrl;
+    preview.style.display = 'block';
+    currentJobId = data.jobId;
+    document.getElementById('publishBox').style.display = 'block';
+  } catch (e) {
+    status.textContent = 'Erro: ' + e.message;
+  } finally {
+    document.getElementById('btnGenerate').disabled = false;
+  }
+});
+
+document.getElementById('btnPublish').addEventListener('click', async () => {
+  const pubStatus = document.getElementById('pubStatus');
+  const platforms = Array.from(document.querySelectorAll('.pubPlatform:checked')).map(c => c.value);
+  const caption = document.getElementById('pubCaption').value;
+  if (!currentJobId || platforms.length === 0) {
+    return alert('Gera o vídeo primeiro e marca pelo menos uma plataforma');
+  }
+  pubStatus.textContent = 'Publicando...';
+  try {
+    const res = await fetch(`/publish/${currentJobId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ platforms, title: caption, caption }),
+    });
+    const data = await res.json();
+    pubStatus.textContent = JSON.stringify(data, null, 2);
+  } catch (e) {
+    pubStatus.textContent = 'Erro: ' + e.message;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+{
+  "_arquetiposDePersonagem": {
+    "caotico": {
+      "descricao": "burro mas confiante, decisões absurdas, humor físico, muito memorável",
+      "personagens": {
+        "peter_griffin": { "nome": "Peter Griffin", "descricaoVisual": "homem branco gordo, careca com tufo de cabelo castanho, camisa polo branca, calça vermelha, queixo grande" },
+        "homer_simpson": { "nome": "Homer Simpson", "descricaoVisual": "homem amarelo careca com dois fios de cabelo, camisa branca de manga curta, calça azul, barriga grande" },
+        "stan_smith": { "nome": "Stan Smith", "descricaoVisual": "homem branco de queixo quadrado, cabelo loiro curto, camisa social azul clara, gravata vermelha" }
+      }
+    },
+    "explosivo": {
+      "descricao": "maldoso, manipulador, sarcasmo pesado, humor ácido, sem filtro",
+      "personagens": {
+        "cartman": { "nome": "Cartman", "descricaoVisual": "menino gordo baixinho, boné azul e amarelo, casaco marrom grosso, expressão de raiva/deboche" },
+        "stewie": { "nome": "Stewie Griffin", "descricaoVisual": "bebê com cabeça alongada, macacão listrado vermelho e preto, expressão arrogante" },
+        "angelica": { "nome": "Angelica Pickles", "descricaoVisual": "menina loira de cabelo preso, vestido roxo, expressão manipuladora" }
+      }
+    },
+    "calmo": {
+      "descricao": "confiante, sarcástico, no controle da situação, nunca se abala",
+      "personagens": {
+        "pernalonga": { "nome": "Pernalonga", "descricaoVisual": "coelho cinza antropomórfico, orelhas compridas em pé, postura relaxada, comendo uma cenoura" },
+        "rick_sanchez": { "nome": "Rick Sanchez", "descricaoVisual": "homem idoso magro, cabelo azul espetado, jaleco/casaco cinza, saliva escorrendo do canto da boca" },
+        "kronk": { "nome": "Kronk", "descricaoVisual": "homem musculoso alto, cabelo preto black-power, expressão tranquila e um pouco confusa" }
+      }
+    },
+    "engracado": {
+      "descricao": "muito burro, falas absurdas, reações exageradas, caos constante",
+      "personagens": {
+        "bob_esponja": { "nome": "Bob Esponja", "descricaoVisual": "esponja amarela quadrada, calça marrom xadrez, camisa branca, gravata vermelha, sorriso enorme" },
+        "patrick": { "nome": "Patrick Estrela", "descricaoVisual": "estrela-do-mar rosa, bermuda verde e roxa floral, expressão bobalhona" },
+        "gaguinho": { "nome": "Gaguinho (Porco Pica-Pau)", "descricaoVisual": "porquinho antropomórfico rosa, jaqueta azul, sem calça, expressão nervosa" }
+      }
+    },
+    "marcante": {
+      "descricao": "inteligência exagerada ou visual/vocal muito único, ego gigante, situações absurdas",
+      "personagens": {
+        "gumball": { "nome": "Gumball", "descricaoVisual": "gato azul antropomórfico, moletom cinza, orelhas grandes, expressão exagerada" },
+        "darwin": { "nome": "Darwin", "descricaoVisual": "peixinho laranja antropomórfico com pernas, olhos grandes redondos, sorriso largo" },
+        "dexter": { "nome": "Dexter", "descricaoVisual": "menino ruivo baixinho, óculos redondos, jaleco de laboratório branco, luvas roxas" }
+      }
+    }
+  },
+  "peter_conspira": {
+    "personagem": "Peter Griffin",
+    "arquetipo": "caotico",
+    "personagemKey": "peter_griffin",
+    "tom": "conspiração / teoria proibida / 'acorda pra realidade'",
+    "temas": ["controle mental", "mídia e algoritmos", "manipulação psicológica", "segredos escondidos da sociedade"],
+    "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o jornal do Peter",
+    "cta1_crescimento": "segue o perfil pra não perder a próxima revelação",
+    "cta2_monetizacao": "aprende a fazer vídeo assim também, link na bio"
+  },
+  "jornal_do_cartman": {
+    "personagem": "Cartman",
+    "arquetipo": "explosivo",
+    "personagemKey": "cartman",
+    "tom": "humor ácido + 'notícia' absurda da internet",
+    "temas": ["fofoca da internet", "polêmicas virais", "sátira de comportamento humano"],
+    "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o Jornal do Cartman",
+    "cta1_crescimento": "segue o Jornal do Cartman",
+    "cta2_monetizacao": "aprende a fazer vídeos iguais aos meus, link na bio"
+  },
+  "jornal_do_rick": {
+    "personagem": "Rick Sanchez",
+    "arquetipo": "calmo",
+    "personagemKey": "rick_sanchez",
+    "tom": "cientista sarcástico expondo 'verdade' científica/conspiratória",
+    "temas": ["ciência esquisita", "teorias sobre a realidade/multiverso", "crítica sarcástica à sociedade"],
+    "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o Jornal do Rick",
+    "cta1_crescimento": "segue pra não perder a próxima descoberta",
+    "cta2_monetizacao": "aprende a fazer vídeo assim, link na bio"
+  }
+}
