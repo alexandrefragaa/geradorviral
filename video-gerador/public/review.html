@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão do vídeo — pronto pra publicar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #16151A;
+    --panel: #1E1D24;
+    --panel-raised: #26252D;
+    --line: #322F3A;
+    --text: #EDEAE3;
+    --text-dim: #8C8A94;
+    --accent-publish: #FF5A38;
+    --accent-preview: #39D6C4;
+    --accent-publish-dim: #7A3527;
+    --accent-preview-dim: #1F4A45;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Archivo', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px;
+    min-height: 100vh;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* ===== HEADER ===== */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 0;
+  }
+  .back-btn:hover { color: var(--text); }
+  .back-btn:focus-visible { outline: 2px solid var(--accent-preview); outline-offset: 3px; border-radius: 4px; }
+
+  .status-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--accent-preview);
+    background: var(--accent-preview-dim);
+    border: 1px solid var(--accent-preview);
+    padding: 4px 9px;
+    border-radius: 100px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .subtitle strong { color: var(--text); font-weight: 600; }
+
+  /* ===== PREVIEW ===== */
+  .preview-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: #0B0B0E;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    margin-bottom: 10px;
+  }
+
+  .preview-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(57,214,196,0.16), transparent 55%),
+      radial-gradient(ellipse at 70% 80%, rgba(255,90,56,0.14), transparent 55%),
+      #101014;
+  }
+
+  .character-photo {
+    position: absolute;
+    left: 50%;
+    bottom: 78px;
+    transform: translateX(-50%);
+    width: 58%;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    background: linear-gradient(160deg, #3a2a22, #1c1712);
+    border: 2px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 8px;
+  }
+
+  .caption-overlay {
+    position: absolute;
+    bottom: 24px;
+    left: 12px;
+    right: 12px;
+    text-align: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 15px;
+    line-height: 1.3;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.9);
+  }
+  .caption-overlay span {
+    background: rgba(255,90,56,0.9);
+    padding: 2px 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .vibe-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--accent-publish);
+    background: rgba(255,90,56,0.12);
+    border: 1px solid var(--accent-publish-dim);
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.45);
+    border: 1.5px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .play-btn:hover { background: rgba(0,0,0,0.6); transform: translate(-50%, -50%) scale(1.05); }
+  .play-btn:focus-visible { outline: 2px solid var(--accent-preview); outline-offset: 3px; }
+
+  .scrub-row {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 12px 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .scrub-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 2px;
+    position: relative;
+  }
+  .scrub-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 38%;
+    background: var(--accent-preview);
+    border-radius: 2px;
+  }
+  .scrub-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ===== SECTION LABEL ===== */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 26px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ===== TIMELINE / LAYERS ===== */
+  .timeline {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .playhead {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: calc(10px + 38%);
+    width: 2px;
+    background: var(--accent-preview);
+    z-index: 5;
+    pointer-events: none;
+  }
+  .playhead::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--accent-preview);
+    border-radius: 50% 50% 50% 0;
+    rotate: -45deg;
+  }
+
+  .layer-row {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 6px;
+    border-radius: 8px;
+  }
+  .layer-row + .layer-row { border-top: 1px solid var(--line); }
+
+  .layer-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .layer-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .layer-track {
+    height: 22px;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+  }
+  .layer-track-fill {
+    position: absolute;
+    inset: 0;
+    opacity: 0.85;
+  }
+
+  .lyr-legenda .layer-dot, .lyr-legenda .layer-track-fill { background: #F2C744; }
+  .lyr-camera .layer-dot, .lyr-camera .layer-track-fill { background: #39D6C4; }
+  .lyr-transicao .layer-dot, .lyr-transicao .layer-track-fill { background: #B98CF2; }
+  .lyr-video .layer-dot, .lyr-video .layer-track-fill { background: #5B8CF2; }
+  .lyr-imagens .layer-dot, .lyr-imagens .layer-track-fill { background: #FF5A38; }
+
+  .layer-track { background: var(--panel-raised); }
+  .lyr-legenda .layer-track-fill { clip-path: polygon(0 0,14% 0,14% 100%,0 100%, 22% 100%, 22% 0, 40% 0, 40% 100%, 48%100%,48% 0,70% 0,70% 100%,78% 100%,78% 0,100% 0,100% 100%,0 100%); }
+  .lyr-camera .layer-track-fill { clip-path: polygon(5% 0,30% 0,30% 100%,5% 100%, 55% 100%,55% 0,85% 0,85% 100%); }
+  .lyr-transicao .layer-track-fill { clip-path: polygon(28% 0,33% 0,33% 100%,28% 100%, 63% 100%,63% 0,68% 0,68% 100%); }
+  .lyr-video .layer-track-fill { clip-path: polygon(0 0,100% 0,100% 100%,0 100%); opacity: 0.35; }
+  .lyr-imagens .layer-track-fill { clip-path: polygon(0 0,20% 0,20% 100%,0 100%, 45% 100%,45% 0,72% 0,72% 100%,72%100%,90%100%,90%0,100%0,100%100%); }
+
+  /* ===== AUDIO CONTROL ===== */
+  .audio-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 12px;
+  }
+  .audio-row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .audio-title { font-size: 12.5px; font-weight: 700; }
+  .audio-db {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-preview);
+  }
+  .slider {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--panel-raised);
+    outline: none;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--accent-preview);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  .mood-markers {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .mood-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 3px 7px;
+    border-radius: 5px;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+  }
+  .mood-chip.tensa { color: #FF5A38; border-color: var(--accent-publish-dim); }
+  .mood-chip.anim { color: #39D6C4; border-color: var(--accent-preview-dim); }
+
+  /* ===== PUBLISH ===== */
+  .publish-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+  .platforms {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .platform-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 6px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: var(--panel-raised);
+    color: var(--text-dim);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .platform-btn.active {
+    border-color: var(--accent-publish);
+    color: var(--text);
+    background: rgba(255,90,56,0.08);
+  }
+  .platform-btn:focus-visible { outline: 2px solid var(--accent-preview); outline-offset: 2px; }
+  .platform-icon { font-size: 18px; line-height: 1; }
+
+  label.field-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  input[type="text"], textarea {
+    width: 100%;
+    background: var(--panel-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    padding: 10px 11px;
+    margin-bottom: 14px;
+    resize: none;
+  }
+  input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-preview);
+  }
+  textarea { min-height: 64px; line-height: 1.4; }
+
+  .publish-btn {
+    width: 100%;
+    background: var(--accent-publish);
+    color: #1A0D08;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+  }
+  .publish-btn:hover { filter: brightness(1.08); }
+  .publish-btn:focus-visible { outline: 2px solid var(--accent-preview); outline-offset: 3px; }
+
+  .redirect-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <button class="back-btn" id="backBtn" aria-label="Voltar para editar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      Voltar pra editar
+    </button>
+    <span class="status-pill">Editado · 1 min</span>
+  </div>
+
+  <h1>Vídeo reproduzido</h1>
+  <p class="subtitle">Confere se ficou <strong>viral vibe alta</strong> antes de publicar.</p>
+
+  <div class="preview-wrap">
+    <div class="preview-bg"></div>
+    <span class="vibe-tag">Viral vibe alta</span>
+    <div class="character-photo">personagem<br>(vídeo + fundo)</div>
+    <div class="caption-overlay"><span>SE VOCÊ NÃO TÁ SABENDO DE NADA...</span></div>
+    <button class="play-btn" id="playBtn" aria-label="Reproduzir vídeo">
+      <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <div class="scrub-row">
+      <span class="scrub-time">0:23</span>
+      <div class="scrub-track"><div class="scrub-fill"></div></div>
+      <span class="scrub-time">1:00</span>
+    </div>
+  </div>
+
+  <div class="section-label">Camadas do vídeo</div>
+  <div class="timeline">
+    <div class="playhead"></div>
+
+    <div class="layer-row lyr-legenda">
+      <span class="layer-label"><span class="layer-dot"></span>Legenda</span>
+      <div class="layer-track"><div class="layer-track-fill"></div></div>
+    </div>
+    <div class="layer-row lyr-camera">
+      <span class="layer-label"><span class="layer-dot"></span>Efeito câmera</span>
+      <div class="layer-track"><div class="layer-track-fill"></div></div>
+    </div>
+    <div class="layer-row lyr-transicao">
+      <span class="layer-label"><span class="layer-dot"></span>Transição</span>
+      <div class="layer-track"><div class="layer-track-fill"></div></div>
+    </div>
+    <div class="layer-row lyr-video">
+      <span class="layer-label"><span class="layer-dot"></span>Vídeo de fundo</span>
+      <div class="layer-track"><div class="layer-track-fill"></div></div>
+    </div>
+    <div class="layer-row lyr-imagens">
+      <span class="layer-label"><span class="layer-dot"></span>Imagens</span>
+      <div class="layer-track"><div class="layer-track-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="audio-panel">
+    <div class="audio-row-top">
+      <span class="audio-title">Áudio de fundo</span>
+      <span class="audio-db" id="dbLabel">12% · -12 dB</span>
+    </div>
+    <input type="range" class="slider" id="volumeSlider" min="0" max="100" value="12">
+    <div class="mood-markers">
+      <span class="mood-chip tensa">0:14 — trecho tenso: música suspense</span>
+      <span class="mood-chip anim">0:41 — trecho animado: música cinemática</span>
+    </div>
+  </div>
+
+  <div class="section-label">Publicar</div>
+  <div class="publish-panel">
+    <div class="platforms">
+      <button class="platform-btn active" data-platform="youtube">
+        <span class="platform-icon">▶</span>YouTube
+      </button>
+      <button class="platform-btn active" data-platform="tiktok">
+        <span class="platform-icon">♪</span>TikTok
+      </button>
+      <button class="platform-btn" data-platform="instagram">
+        <span class="platform-icon">◎</span>Instagram
+      </button>
+    </div>
+
+    <label class="field-label" for="titleInput">Título</label>
+    <input type="text" id="titleInput" value="Jornal do Cartman: ninguém tava pronto pra essa" maxlength="100">
+
+    <label class="field-label" for="descInput">Descrição</label>
+    <textarea id="descInput">se você não tá sabendo de nada, já se prepara 👀 segue o Jornal do Cartman</textarea>
+
+    <button class="publish-btn" id="publishBtn">Publicar e abrir lá</button>
+    <p class="redirect-note">Depois de publicar, você é redirecionado pra plataforma escolhida pra ajustar mais alguma coisa por lá.</p>
+  </div>
+
+</div>
+
+<script>
+  const playBtn = document.getElementById('playBtn');
+  const playIcon = document.getElementById('playIcon');
+  let playing = false;
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playIcon.innerHTML = playing
+      ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>'
+      : '<path d="M8 5v14l11-7z"/>';
+    playBtn.setAttribute('aria-label', playing ? 'Pausar vídeo' : 'Reproduzir vídeo');
+  });
+
+  const slider = document.getElementById('volumeSlider');
+  const dbLabel = document.getElementById('dbLabel');
+  slider.addEventListener('input', () => {
+    const pct = slider.value;
+    const db = pct == 0 ? '-∞' : (20 * Math.log10(pct / 100)).toFixed(0);
+    dbLabel.textContent = `${pct}% · ${db} dB`;
+  });
+
+  document.querySelectorAll('.platform-btn').forEach(btn => {
+    btn.addEventListener('click', () => btn.classList.toggle('active'));
+  });
+
+  document.getElementById('backBtn').addEventListener('click', () => {
+    alert('Voltaria pra tela de edição (camada selecionada fica editável).');
+  });
+
+  document.getElementById('publishBtn').addEventListener('click', () => {
+    const active = [...document.querySelectorAll('.platform-btn.active')].map(b => b.dataset.platform);
+    if (active.length === 0) {
+      alert('Escolhe pelo menos uma plataforma antes de publicar.');
+      return;
+    }
+    alert(`Publicando em: ${active.join(', ')}\n\nDepois disso, redireciona pra cada plataforma.`);
+  });
+</script>
+</body>
+</html>

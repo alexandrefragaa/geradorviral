@@ -1,23 +1,23 @@
 {
   "peter_griffin": {
     "nome": "Peter Griffin",
-    "referenceId": ""
+    "referenceId": "63ea4b3c2f8f4d61b2cdd4e010efcbb5"
   },
   "homer_simpson": {
     "nome": "Homer Simpson",
-    "referenceId": ""
+    "referenceId": "515e8f2d5579421190ce61d32ff601eb"
   },
   "stan_smith": {
     "nome": "Stan Smith",
     "referenceId": ""
   },
   "cartman": {
-    "nome": "Cartman",
-    "referenceId": ""
+    "nome": "Eric Cartman",
+    "referenceId": "0784aeee9fb14ef8a7d1e50e45809ebf"
   },
   "stewie": {
     "nome": "Stewie Griffin",
-    "referenceId": ""
+    "referenceId": "26f644d9279841c5b41961991c9f9e06"
   },
   "angelica": {
     "nome": "Angelica Pickles",
@@ -25,11 +25,11 @@
   },
   "pernalonga": {
     "nome": "Pernalonga",
-    "referenceId": ""
+    "referenceId": "958bb52efb3a4a71ac55bdf34c305337"
   },
   "rick_sanchez": {
     "nome": "Rick Sanchez",
-    "referenceId": ""
+    "referenceId": "9318b32b5477496a960e2958dd51c7ea"
   },
   "kronk": {
     "nome": "Kronk",
@@ -37,7 +37,7 @@
   },
   "bob_esponja": {
     "nome": "Bob Esponja",
-    "referenceId": ""
+    "referenceId": "01b057e7592b4b97a6963423f91f5e22"
   },
   "patrick": {
     "nome": "Patrick Estrela",
@@ -49,7 +49,7 @@
   },
   "gumball": {
     "nome": "Gumball",
-    "referenceId": ""
+    "referenceId": "63ea4b3c2f8f4d61b2cdd4e010efcbb5"
   },
   "darwin": {
     "nome": "Darwin",

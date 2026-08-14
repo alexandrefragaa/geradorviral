@@ -3,31 +3,31 @@
     "caotico": {
       "descricao": "burro mas confiante, decisões absurdas, humor físico, muito memorável",
       "personagens": {
-        "peter_griffin": { "nome": "Peter Griffin", "descricaoVisual": "homem branco gordo, careca com tufo de cabelo castanho, camisa polo branca, calça vermelha, queixo grande" },
-        "homer_simpson": { "nome": "Homer Simpson", "descricaoVisual": "homem amarelo careca com dois fios de cabelo, camisa branca de manga curta, calça azul, barriga grande" },
+        "peter_griffin": { "nome": "Peter Griffin", "descricaoVisual": "homem de meia-idade e obeso, com pele clara e cabelo castanho curto. Ele tem um rosto marcante caracterizado por óculos redondos de armação preta e um queixo duplo muito proeminente e arredondado. O seu visual clássico consiste em uma camisa social branca com as mangas compridas dobradas até os cotovelos, que fica sempre por dentro de uma calça comprida bege. Ele usa um cinto preto com fivela dourada para segurar as calças e finaliza o seu estilo com sapatos sociais marrons" },
+        "homer_simpson": { "nome": "Homer Simpson", "descricaoVisual": "homem de meia-idade, obeso e de pele amarela brilhante. Ele é quase totalmente calvo, mantendo apenas dois fios de cabelo finos no topo da cabeça e uma linha de cabelo em formato de M, acima de cada orelha. O seu rosto se destaca por uma barba por fazer de cor marrom-clara ao redor da boca e olhos grandes e redondos. O seu vestuário padrão é extremamente simples, composto por uma camisa polo branca de mangas curtas e uma calça jeans azul-clara reta. Ele completa o seu visual clássico com sapatos sociais pretos e redondos" },
         "stan_smith": { "nome": "Stan Smith", "descricaoVisual": "homem branco de queixo quadrado, cabelo loiro curto, camisa social azul clara, gravata vermelha" }
       }
     },
     "explosivo": {
       "descricao": "maldoso, manipulador, sarcasmo pesado, humor ácido, sem filtro",
       "personagens": {
-        "cartman": { "nome": "Cartman", "descricaoVisual": "menino gordo baixinho, boné azul e amarelo, casaco marrom grosso, expressão de raiva/deboche" },
-        "stewie": { "nome": "Stewie Griffin", "descricaoVisual": "bebê com cabeça alongada, macacão listrado vermelho e preto, expressão arrogante" },
+        "cartman": { "nome": "Cartman", "descricaoVisual": "criança da quarta série, obesa, de pele clara e com um rosto redondo. O seu visual de inverno é marcante e consiste em uma jaqueta vermelha brilhante e uma calça marrom-escura frouxa. Ele esconde o seu cabelo castanho sob uma touca azul-turquesa com um pomo amarelo no topo e uma borda amarela dobrada. Ele calça luvas amarelas nas mãos e sapatos pretos simples nos pés. O seu corpo corpulento e formato circular o tornam um dos personagens mais fáceis de reconhecer na animação." },
+        "stewie": { "nome": "Stewie Griffin", "descricaoVisual": "bebê de um ano com uma cabeça única em formato de bola de futebol americano. Ele tem pele clara, apenas três fios de cabelo pretos perfeitamente alinhados no topo da cabeça e olhos grandes e expressivos. O seu visual clássico é composto por um macacão vermelho de jardineira com dois grandes botões amarelos na frente, vestido por cima de uma camisa de mangas compridas amarela. Ele finaliza o seu estilo infantil com sapatos sociais pretos e redondos, um contraste divertido para a sua mente brilhante e planos de dominação mundial" },
         "angelica": { "nome": "Angelica Pickles", "descricaoVisual": "menina loira de cabelo preso, vestido roxo, expressão manipuladora" }
       }
     },
     "calmo": {
       "descricao": "confiante, sarcástico, no controle da situação, nunca se abala",
       "personagens": {
-        "pernalonga": { "nome": "Pernalonga", "descricaoVisual": "coelho cinza antropomórfico, orelhas compridas em pé, postura relaxada, comendo uma cenoura" },
-        "rick_sanchez": { "nome": "Rick Sanchez", "descricaoVisual": "homem idoso magro, cabelo azul espetado, jaleco/casaco cinza, saliva escorrendo do canto da boca" },
+        "pernalonga": { "nome": "Pernalonga", "descricaoVisual": "coelho antropomórfico alto, magro e de pelagem predominantemente cinza e branca. Ele possui o corpo e as longas orelhas na cor cinza, enquanto o seu focinho, a parte interna das orelhas, a barriga e as bochechas são brancos. O seu rosto é marcado por olhos grandes e expressivos, grandes dentes incisivos superiores proeminentes e três fios de bigode pretos de cada lado do focinho. Ele não costuma usar roupas, mas está quase sempre calçando luvas brancas nas mãos e segurando uma cenoura pela metade com a outra mão" },
+        "rick_sanchez": { "nome": "Rick Sanchez", "descricaoVisual": "cientista idoso, magro e de pele extremamente pálida, quase acinzentada. O seu traço mais marcante é o cabelo espetado em formato de múltiplos cones na cor azul-clara, acompanhado por uma única sobrancelha unida da mesma cor. Ele veste uma camiseta azul-clara simples por baixo de um jaleco branco de laboratório aberto, que vai até a altura dos joelhos. A sua vestimenta se completa com uma calça comprida marrom-escura presa por um cinto marrom com fivela dourada, além de sapatos sociais pretos. Ele frequentemente exibe uma expressão de desdém e uma mancha de saliva verde nos lábios" },
         "kronk": { "nome": "Kronk", "descricaoVisual": "homem musculoso alto, cabelo preto black-power, expressão tranquila e um pouco confusa" }
       }
     },
     "engracado": {
       "descricao": "muito burro, falas absurdas, reações exageradas, caos constante",
       "personagens": {
-        "bob_esponja": { "nome": "Bob Esponja", "descricaoVisual": "esponja amarela quadrada, calça marrom xadrez, camisa branca, gravata vermelha, sorriso enorme" },
+        "bob_esponja": { "nome": "Bob Esponja", "descricaoVisual": "Bob Esponja Calça Quadrada é uma esponja do mar retangular, amarela e cheia de furos verdes-escuros. Ele tem olhos grandes, redondos e azuis com três cílios longos em cada um, além de bochechas rosadas com sardas e dois dentes incisivos proeminentes que saltam da boca. O seu visual clássico é o uniforme de trabalho: uma camisa social branca de mangas curtas com uma gravata vermelha pontuda e uma calça quadrada marrom presa por um cinto preto. Ele completa o seu estilo com meias brancas cano alto que possuem listras azuis e vermelhas, além de sapatos sociais pretos brilhantes e redondos" },
         "patrick": { "nome": "Patrick Estrela", "descricaoVisual": "estrela-do-mar rosa, bermuda verde e roxa floral, expressão bobalhona" },
         "gaguinho": { "nome": "Gaguinho (Porco Pica-Pau)", "descricaoVisual": "porquinho antropomórfico rosa, jaqueta azul, sem calça, expressão nervosa" }
       }
@@ -35,26 +35,62 @@
     "marcante": {
       "descricao": "inteligência exagerada ou visual/vocal muito único, ego gigante, situações absurdas",
       "personagens": {
-        "gumball": { "nome": "Gumball", "descricaoVisual": "gato azul antropomórfico, moletom cinza, orelhas grandes, expressão exagerada" },
+        "gumball": { "nome": "Gumball", "descricaoVisual": "gato antropomórfico de doze anos com pele inteiramente azul-clara e uma cabeça grande e arredondada. Ele possui olhos pretos ovais e expressivos, além de três bigodes pretos bem finos de cada lado das bochechas e orelhas triangulares no topo da cabeça. O seu visual é extremamente simples e casual, consistindo em um suéter de tricô bege com gola e punhos marrons sobrepostos. Ele usa uma calça comprida jeans cinza-escura e reta, e não costuma calçar sapatos ou meias, deixando as suas patas traseiras azuis totalmente à mostra" },
         "darwin": { "nome": "Darwin", "descricaoVisual": "peixinho laranja antropomórfico com pernas, olhos grandes redondos, sorriso largo" },
         "dexter": { "nome": "Dexter", "descricaoVisual": "menino ruivo baixinho, óculos redondos, jaleco de laboratório branco, luvas roxas" }
       }
     }
   },
+  "_ganchos": {
+    "descricao": "Banco de frases pra gerar o início de todo vídeo: abertura de retenção alta + transição pro nome do formato. Usado por generateHook.js, que sorteia sem repetir a mesma abertura duas vezes seguidas no mesmo formato.",
+    "ganchosAbertura": [
+      "OLHA A EXPLOSÃO",
+      "ATÉ QUE ENFIM",
+      "FINALMENTE",
+      "ALELUIA",
+      "AGORA SIM PORRA",
+      "AGORA SIM",
+      "OLHA ISSO",
+      "SE LIGA NISSO",
+      "NÃO ACREDITO QUE ISSO VAZOU",
+      "PARA TUDO QUE VOCÊ TÁ FAZENDO",
+      "ISSO AQUI VAI TE DEIXAR SEM CHÃO",
+      "NINGUÉM TAVA PRONTO PRA ISSO",
+      "ESSA AQUI NINGUÉM CONTOU PRA VOCÊ",
+      "SEGURA ESSA",
+      "CHEGOU A HORA"
+    ],
+    "condicionais": [
+      "se você não tá sabendo de nada",
+      "se você não sabe disso",
+      "se você tá fora",
+      "se você não escutou sobre isso",
+      "se ninguém te contou",
+      "se você perdeu essa"
+    ],
+    "palavroes": ["porra", "zorra", "merda"],
+    "formatosVerbo": [
+      "vai começar a {palavrao} do",
+      "vai começar mais um vídeo do",
+      "vai começar mais um episódio do"
+    ]
+  },
   "peter_conspira": {
     "personagem": "Peter Griffin",
     "arquetipo": "caotico",
     "personagemKey": "peter_griffin",
+    "nomeFormato": "Jornal do Peter",
     "tom": "conspiração / teoria proibida / 'acorda pra realidade'",
     "temas": ["controle mental", "mídia e algoritmos", "manipulação psicológica", "segredos escondidos da sociedade"],
     "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o jornal do Peter",
-    "cta1_crescimento": "segue o perfil pra não perder a próxima revelação",
+    "cta1_crescimento": "segue o Peter",
     "cta2_monetizacao": "aprende a fazer vídeo assim também, link na bio"
   },
   "jornal_do_cartman": {
     "personagem": "Cartman",
     "arquetipo": "explosivo",
     "personagemKey": "cartman",
+    "nomeFormato": "Jornal do Cartman",
     "tom": "humor ácido + 'notícia' absurda da internet",
     "temas": ["fofoca da internet", "polêmicas virais", "sátira de comportamento humano"],
     "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o Jornal do Cartman",
@@ -65,6 +101,7 @@
     "personagem": "Rick Sanchez",
     "arquetipo": "calmo",
     "personagemKey": "rick_sanchez",
+    "nomeFormato": "Jornal do Rick",
     "tom": "cientista sarcástico expondo 'verdade' científica/conspiratória",
     "temas": ["ciência esquisita", "teorias sobre a realidade/multiverso", "crítica sarcástica à sociedade"],
     "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o Jornal do Rick",
