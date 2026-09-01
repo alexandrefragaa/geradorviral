@@ -95,7 +95,7 @@ function pickMusicPath(musicOverride) {
 }
 
 async function generateFromTrendSelection(options = {}) {
-  const { topic, channelKey, characterKey, voiceKey, backgroundList, music, targetDuration, channelHistory = [] } = options;
+  const { topic, channelKey, characterKey, voiceKey, backgroundList, music, targetDuration, channelHistory = [], performanceSignals = [] } = options;
   const styles = listProfiles();
   const characters = listCharacters();
   const voices = listVoices();
@@ -110,6 +110,7 @@ async function generateFromTrendSelection(options = {}) {
   const script = await generateScript(selectedProfile.key, trendTopic, {
     targetDuration: targetDuration || 69,
     variacoes: 1,
+    performanceSignals,
   });
 
   const analysis = analyzeScript(script);
@@ -174,7 +175,7 @@ router.get("/trends", (req, res) => {
 // variacoes: gera N roteiros com ganchos diferentes pra testar formato (A/B)
 router.post("/generate-script", express.json(), async (req, res) => {
   try {
-    const { channelKey, characterKey, topic, targetDuration, variacoes } = req.body;
+    const { channelKey, characterKey, topic, targetDuration, variacoes, performanceSignals } = req.body;
     if (!topic) {
       return res.status(400).json({ error: "Falta o campo: topic" });
     }
@@ -185,6 +186,7 @@ router.post("/generate-script", express.json(), async (req, res) => {
     const script = await generateScript(selectedProfile.key, topic, {
       targetDuration: targetDuration || 69,
       variacoes: variacoes || 1,
+      performanceSignals: performanceSignals || [{ topic: "Artemis", views: 7000 }],
     });
     const analysis = analyzeScript(Array.isArray(script) ? script[0] : script);
     res.json({ script, analysis, channelKey: selectedProfile.key, profile: selectedProfile });
@@ -205,7 +207,7 @@ router.post("/channel-analysis", express.json(), async (req, res) => {
 
 router.post("/autopilot", express.json(), async (req, res) => {
   try {
-    const { topic, channelKey, characterKey, voiceKey, backgroundList, music, targetDuration, channelHistory } = req.body || {};
+    const { topic, channelKey, characterKey, voiceKey, backgroundList, music, targetDuration, channelHistory, performanceSignals } = req.body || {};
     const channelAnalysis = analyzeChannelHistory(channelHistory);
     const selection = await generateFromTrendSelection({
       topic,
@@ -216,6 +218,7 @@ router.post("/autopilot", express.json(), async (req, res) => {
       music,
       targetDuration,
       channelHistory,
+      performanceSignals: performanceSignals || [{ topic: "Artemis", views: 7000 }],
     });
 
     const jobId = uuid();

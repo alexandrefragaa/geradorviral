@@ -86,8 +86,7 @@ async function generateScript(channelKey, topic, options = {}) {
     );
   }
 
-  const { targetDuration = 69, variacoes = 1 } = options;
-  const targetWords = Math.round(targetDuration * 2.6);
+  const { targetDuration = 69, variacoes = 1, targetWords = 378, performanceSignals = [] } = options;
   const minimumWords = Math.round(targetWords * 0.85);
   const maximumWords = Math.round(targetWords * 1.15);
 
@@ -112,6 +111,11 @@ async function generateScript(channelKey, topic, options = {}) {
     // sorteia uma abertura "nível Deus" diferente por chamada (pra variações não saírem iguais)
     const aberturasSorteadas = sorteiaAlguns(ganchosAbertura, 3);
     const bordaoVariado = montaBordao(profile.personagem) || profile.bordao;
+    const performanceContext = performanceSignals.length > 0
+      ? `Referencias de desempenho do canal: ${performanceSignals.map((item) =>
+        `${item.topic} (${item.views} visualizacoes)`
+      ).join(", ")}. Use os elementos que podem ter contribuido para o interesse, sem copiar o video.`
+      : "Nao ha historico de desempenho informado; use o melhor formato editorial do perfil.";
 
     const systemPrompt = `Você escreve roteiros virais de ~${targetDuration}s para vídeos "notícia" narrados
 por um personagem de desenho animado com personalidade extremamente forte.
@@ -119,10 +123,11 @@ por um personagem de desenho animado com personalidade extremamente forte.
 Personagem: ${profile.personagem} (arquétipo: ${profile.arquetipo})
 Tom: ${profile.tom}
 Temas típicos: ${profile.temas.join(", ")}
+${performanceContext}
 
-Duração alvo: ~${targetDuration} segundos falados (entre ${minimumWords} e ${maximumWords} palavras,
+Duração de referencia: ${targetDuration} segundos, mas priorize um roteiro completo entre ${minimumWords} e ${maximumWords} palavras,
 meta ideal de ${targetWords} palavras
-em ritmo rápido de fala). ${monetizavel ? "Esse comprimento (60s+) é o mínimo exigido pelo TikTok Creator Rewards Program pra monetizar." : "Atenção: abaixo de 60s o vídeo NÃO é elegível pra monetização no TikTok, só serve pra alcance/crescimento."}
+em ritmo natural de fala). O áudio final define a duração real do vídeo. ${monetizavel ? "A referencia de 60s+ atende ao requisito de duracao minima do TikTok Creator Rewards Program." : "Abaixo de 60s o vídeo serve para alcance/crescimento."}
 
 Siga esta estrutura de batidas, escalada pra duração alvo:
 
@@ -169,42 +174,55 @@ Regras gerais:
   crie um texto 100% original nesse estilo
 - Devolva só o texto do roteiro corrido, sem marcar os tempos/seções no output final`;
 
-    const response = provider === "gemini"
-      ? await fetch(`${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ role: "user", parts: [{ text: `Tema do vídeo: ${topic}` }] }],
-          generationConfig: { maxOutputTokens: Math.max(1400, targetWords * 3), temperature: 0.9 },
-        }),
-      })
-      : await fetch(ANTHROPIC_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: Math.max(1400, targetWords * 3),
-          system: systemPrompt,
-          messages: [{ role: "user", content: `Tema do vídeo: ${topic}` }],
-        }),
-      });
+    const requestModel = async (userPrompt) => {
+      const response = provider === "gemini"
+        ? await fetch(`${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+            contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+            generationConfig: { maxOutputTokens: Math.max(2200, targetWords * 4), temperature: 0.9 },
+          }),
+        })
+        : await fetch(ANTHROPIC_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-6",
+            max_tokens: Math.max(2200, targetWords * 4),
+            system: systemPrompt,
+            messages: [{ role: "user", content: userPrompt }],
+          }),
+        });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`${provider === "gemini" ? "Gemini" : "Anthropic"} API falhou (${response.status}): ${errText}`);
-    }
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`${provider === "gemini" ? "Gemini" : "Anthropic"} API falhou (${response.status}): ${errText}`);
+      }
 
-    const data = await response.json();
-    if (provider === "gemini") {
-      return data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("").trim() || "";
+      const data = await response.json();
+      if (provider === "gemini") {
+        return data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("").trim() || "";
+      }
+      const textBlock = data.content.find((b) => b.type === "text");
+      return textBlock ? textBlock.text.trim() : "";
+    };
+
+    let scriptText = await requestModel(`Tema do vídeo: ${topic}`);
+    if (scriptText.split(/\s+/).filter(Boolean).length < minimumWords) {
+      scriptText = await requestModel(
+        `Reescreva o roteiro inteiro sobre o tema "${topic}". A resposta anterior foi interrompida. ` +
+        `Entregue entre ${minimumWords} e ${maximumWords} palavras, com começo, desenvolvimento, ` +
+        `duas viradas de curiosidade, fechamento e os dois CTAs. Não resuma e não interrompa a frase. ` +
+        `Resposta anterior incompleta: "${scriptText}"`
+      );
     }
-    const textBlock = data.content.find((b) => b.type === "text");
-    return textBlock ? textBlock.text.trim() : "";
+    return scriptText;
   };
 
   if (variacoes <= 1) {

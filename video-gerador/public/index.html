@@ -293,7 +293,14 @@ document.getElementById('btnScript').addEventListener('click', async () => {
     const res = await fetch('/generate-script', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ channelKey, characterKey: document.getElementById('characterKey').value, topic, targetDuration, variacoes }),
+      body: JSON.stringify({
+        channelKey,
+        characterKey: document.getElementById('characterKey').value,
+        topic,
+        targetDuration,
+        variacoes,
+        performanceSignals: [{ topic: 'Artemis', views: 7000 }],
+      }),
     });
     const data = await readJsonResponse(res);
     if (data.error) throw new Error(data.error);
