@@ -1,4 +1,5 @@
 const { fetchYoutubeTrends } = require("./youtubeTrends");
+const { fetchTikTokTrends } = require("./tiktokTrends");
 
 const REFRESH_MS = 5 * 60 * 1000; // 5 minutos
 
@@ -12,9 +13,18 @@ let cache = {
 
 async function refresh() {
   try {
-    const youtube = await fetchYoutubeTrends();
-    cache = { youtube, atualizadoEm: new Date().toISOString(), erro: null };
-    console.log(`[trends] atualizado — ${youtube.length} vídeos`);
+    const [youtube, tiktokResult] = await Promise.all([
+      fetchYoutubeTrends(),
+      fetchTikTokTrends(),
+    ]);
+    cache = {
+      youtube,
+      tiktok: tiktokResult.videos,
+      tiktokStatus: tiktokResult.status,
+      atualizadoEm: new Date().toISOString(),
+      erro: null,
+    };
+    console.log(`[trends] atualizado — ${youtube.length} YouTube, ${tiktokResult.videos.length} TikTok`);
   } catch (err) {
     cache = { ...cache, erro: err.message, atualizadoEm: new Date().toISOString() };
     console.error("[trends] erro ao atualizar:", err.message);
