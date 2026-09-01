@@ -49,6 +49,7 @@ const bordaoTemplates = {
 };
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 function sorteiaAlguns(lista, n) {
   const copia = [...lista];
@@ -75,10 +76,13 @@ function montaBordao(personagem) {
  * @param {string} topic       tema/assunto do vídeo
  */
 async function generateScript(channelKey, topic, options = {}) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const geminiKey = String(process.env.GEMINI_API_KEY || "").trim();
+  const anthropicKey = String(process.env.ANTHROPIC_API_KEY || "").trim();
+  const provider = geminiKey ? "gemini" : anthropicKey ? "anthropic" : null;
+  const apiKey = geminiKey || anthropicKey;
   if (!apiKey) {
     throw new Error(
-      "ANTHROPIC_API_KEY não configurada. Preencha o .env (veja .env.example)."
+      "Nenhuma API de roteiro configurada. Adicione GEMINI_API_KEY (recomendado) no .env ou no Render."
     );
   }
 
@@ -159,27 +163,40 @@ Regras gerais:
   crie um texto 100% original nesse estilo
 - Devolva só o texto do roteiro corrido, sem marcar os tempos/seções no output final`;
 
-    const response = await fetch(ANTHROPIC_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 700,
-        system: systemPrompt,
-        messages: [{ role: "user", content: `Tema do vídeo: ${topic}` }],
-      }),
-    });
+    const response = provider === "gemini"
+      ? await fetch(`${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: "user", parts: [{ text: `Tema do vídeo: ${topic}` }] }],
+          generationConfig: { maxOutputTokens: 700, temperature: 0.9 },
+        }),
+      })
+      : await fetch(ANTHROPIC_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 700,
+          system: systemPrompt,
+          messages: [{ role: "user", content: `Tema do vídeo: ${topic}` }],
+        }),
+      });
 
     if (!response.ok) {
       const errText = await response.text();
-      throw new Error(`Anthropic API falhou (${response.status}): ${errText}`);
+      throw new Error(`${provider === "gemini" ? "Gemini" : "Anthropic"} API falhou (${response.status}): ${errText}`);
     }
 
     const data = await response.json();
+    if (provider === "gemini") {
+      return data.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("").trim() || "";
+    }
     const textBlock = data.content.find((b) => b.type === "text");
     return textBlock ? textBlock.text.trim() : "";
   };
