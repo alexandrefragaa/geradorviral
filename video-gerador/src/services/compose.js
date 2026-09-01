@@ -30,7 +30,13 @@ function composeVideo(opts) {
     effects = {},
   } = opts;
 
-  const { zoom = true, transitionDuration = 0.6, characterPop = true } = effects;
+  const {
+    zoom = true,
+    transitionDuration = 0.6,
+    characterPop = true,
+    filterPreset = "",
+    musicVolume = 0.12,
+  } = effects;
   const bgClips = Array.isArray(backgroundPaths) ? backgroundPaths : [backgroundPaths];
 
   return new Promise((resolve, reject) => {
@@ -94,12 +100,13 @@ function composeVideo(opts) {
         `scale=w='760*(${popExpr})':h=-1:eval=frame[char]`
     );
     filters.push(`[bg][char]overlay=(W-w)/2:H-h-40:eval=frame[comp]`);
-    filters.push(`[comp]ass=${subtitlesPath}[final]`);
+    const finalVideoFilter = filterPreset ? `${filterPreset},` : "";
+    filters.push(`[comp]${finalVideoFilter}ass=${subtitlesPath}[final]`);
 
     const audioMaps = musicPath
       ? [
           `[${voiceIndex}:a]volume=1.0[voice]`,
-          `[${musicIndex}:a]volume=0.18,afade=t=out:st=${Math.max(duration - 1, 0)}:d=1[music]`,
+          `[${musicIndex}:a]volume=${musicVolume},afade=t=out:st=${Math.max(duration - 1, 0)}:d=1[music]`,
           `[voice][music]amix=inputs=2:duration=first[aout]`,
         ]
       : [`[${voiceIndex}:a]volume=1.0[aout]`];

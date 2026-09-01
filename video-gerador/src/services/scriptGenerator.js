@@ -86,7 +86,10 @@ async function generateScript(channelKey, topic, options = {}) {
     );
   }
 
-  const { targetDuration = 60, variacoes = 1 } = options;
+  const { targetDuration = 69, variacoes = 1 } = options;
+  const targetWords = Math.round(targetDuration * 2.6);
+  const minimumWords = Math.round(targetWords * 0.85);
+  const maximumWords = Math.round(targetWords * 1.15);
 
   const profile = profiles[channelKey];
   if (!profile) {
@@ -117,7 +120,8 @@ Personagem: ${profile.personagem} (arquétipo: ${profile.arquetipo})
 Tom: ${profile.tom}
 Temas típicos: ${profile.temas.join(", ")}
 
-Duração alvo: ~${targetDuration} segundos falados (aprox. ${Math.round(targetDuration * 2.6)} palavras
+Duração alvo: ~${targetDuration} segundos falados (entre ${minimumWords} e ${maximumWords} palavras,
+meta ideal de ${targetWords} palavras
 em ritmo rápido de fala). ${monetizavel ? "Esse comprimento (60s+) é o mínimo exigido pelo TikTok Creator Rewards Program pra monetizar." : "Atenção: abaixo de 60s o vídeo NÃO é elegível pra monetização no TikTok, só serve pra alcance/crescimento."}
 
 Siga esta estrutura de batidas, escalada pra duração alvo:
@@ -154,6 +158,8 @@ que curtida no algoritmo, então o objetivo é fazer a pessoa digitar uma respos
 
 Regras gerais:
 - Português do Brasil, gíria de rua, frases curtas e diretas, ritmo rápido
+- Escreva entre ${minimumWords} e ${maximumWords} palavras. Nunca entregue um resumo curto: desenvolva o contexto,
+  a opinião, pelo menos duas viradas de curiosidade e os dois CTAs até atingir essa faixa
 - Tom emocional, nunca robótico — soa como fala, não como texto formal
 - Nunca fique "morno" por mais de 3 segundos seguidos — a pessoa precisa ter um motivo
   pra continuar assistindo em CADA trecho, do primeiro ao último segundo, senão ela sai
@@ -170,7 +176,7 @@ Regras gerais:
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemPrompt }] },
           contents: [{ role: "user", parts: [{ text: `Tema do vídeo: ${topic}` }] }],
-          generationConfig: { maxOutputTokens: 700, temperature: 0.9 },
+          generationConfig: { maxOutputTokens: Math.max(1400, targetWords * 3), temperature: 0.9 },
         }),
       })
       : await fetch(ANTHROPIC_URL, {
@@ -182,7 +188,7 @@ Regras gerais:
         },
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
-          max_tokens: 700,
+          max_tokens: Math.max(1400, targetWords * 3),
           system: systemPrompt,
           messages: [{ role: "user", content: `Tema do vídeo: ${topic}` }],
         }),

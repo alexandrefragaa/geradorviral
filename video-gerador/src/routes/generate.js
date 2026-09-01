@@ -108,7 +108,7 @@ async function generateFromTrendSelection(options = {}) {
   const selectedMusic = pickMusicPath(music);
 
   const script = await generateScript(selectedProfile.key, trendTopic, {
-    targetDuration: targetDuration || 60,
+    targetDuration: targetDuration || 69,
     variacoes: 1,
   });
 
@@ -183,7 +183,7 @@ router.post("/generate-script", express.json(), async (req, res) => {
       || styles.find((profile) => profile.personagemKey === characterKey)
       || pickProfileForTopic(topic, styles);
     const script = await generateScript(selectedProfile.key, topic, {
-      targetDuration: targetDuration || 60,
+      targetDuration: targetDuration || 69,
       variacoes: variacoes || 1,
     });
     const analysis = analyzeScript(Array.isArray(script) ? script[0] : script);
@@ -265,6 +265,7 @@ router.post("/autopilot", express.json(), async (req, res) => {
       transitionDuration: 0.7,
       characterPop: true,
       filterPreset: selection.creativePlan.filterPreset,
+      musicVolume: 0.12,
       stickerText: selection.creativePlan.stickerText,
       cameraMotion: selection.creativePlan.cameraMotion,
     };
@@ -329,7 +330,7 @@ router.post("/generate", upload.single("character"), async (req, res) => {
     // se não veio um roteiro pronto, mas veio channelKey + topic, gera automaticamente
     // no estilo do canal de referência (ex: "peter_conspira")
     if (!script && channelKey && topic) {
-      script = await generateScript(channelKey, topic, { targetDuration: targetDuration || 60 });
+      script = await generateScript(channelKey, topic, { targetDuration: targetDuration || 69 });
     }
 
     // aceita um fundo só ("background") ou vários pra dar transição ("backgrounds",
