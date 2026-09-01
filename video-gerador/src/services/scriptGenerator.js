@@ -24,6 +24,9 @@ Object.entries(archetypes).forEach(([arquetipo, archetype]) => {
       const formatName = format.key === "jornal"
         ? `Jornal do ${displayName}`
         : `${displayName} ${format.label}`;
+      if (format.key === "jornal" && Object.values(profiles).some((profile) =>
+        profile.personagemKey === characterKey && profile.nomeFormato === formatName
+      )) return;
       profiles[profileKey] = {
         personagem: character.nome,
         arquetipo,
