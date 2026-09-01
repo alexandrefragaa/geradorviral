@@ -72,8 +72,9 @@ function inferOutfitFromScript(characterKey, script, topic) {
  *                               vazio, deixa o modelo decidir com base na cena/tema.
  * @param {string} [sceneHint]   contexto/tema do vídeo, pra influenciar pose e expressão
  * @param {string} outputPath    caminho onde salvar o PNG gerado
+ * @param {string} [formatHint]  nome do formato editorial escolhido
  */
-async function generateCharacterImage(characterKey, outfitHint, sceneHint, outputPath) {
+async function generateCharacterImage(characterKey, outfitHint, sceneHint, outputPath, formatHint = "") {
   const apiKey = process.env.FAL_API_KEY;
   if (!apiKey) {
     throw new Error("FAL_API_KEY não configurada. Preencha o .env (veja .env.example).");
@@ -93,7 +94,8 @@ async function generateCharacterImage(characterKey, outfitHint, sceneHint, outpu
 
   const prompt =
     `Personagem de desenho animado 3D estilizado (estilo render tipo Pixar/DreamWorks), ` +
-    `${character.descricaoVisual}, ${roupa}, corpo inteiro, pose expressiva de quem está ` +
+    `${character.descricaoVisual}, formato editorial "${formatHint || "notícia e comentário"}", ` +
+    `tema do roteiro "${sceneHint || "assunto atual"}", ${roupa}, corpo inteiro, pose expressiva de quem está ` +
     `narrando uma notícia chocante, fundo liso verde-chroma, iluminação de estúdio, ` +
     `alta qualidade, plano americano`;
 

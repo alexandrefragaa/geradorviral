@@ -255,7 +255,7 @@ router.post("/autopilot", express.json(), async (req, res) => {
     buildStyledSubtitles(words, subtitlesPath, {});
 
     const rawImagePath = path.join(workDir, "character_raw.png");
-    await generateCharacterImage(selection.characterKey, selection.outfitHint, selection.script || selection.topic, rawImagePath);
+    await generateCharacterImage(selection.characterKey, selection.outfitHint, selection.script || selection.topic, rawImagePath, selection.profile.nomeFormato);
     const characterCutoutPath = path.join(workDir, "character.png");
     await cutoutCharacter(rawImagePath, characterCutoutPath);
 
@@ -373,7 +373,8 @@ router.post("/generate", upload.single("character"), async (req, res) => {
       await cutoutCharacter(req.file.path, characterCutoutPath);
     } else {
       const rawImagePath = path.join(workDir, "character_raw.png");
-      await generateCharacterImage(characterKey, outfitHint, script || topic || "", rawImagePath);
+      const selectedProfile = listProfiles().find((profile) => profile.key === channelKey);
+      await generateCharacterImage(characterKey, outfitHint, script || topic || "", rawImagePath, selectedProfile?.nomeFormato);
       await cutoutCharacter(rawImagePath, characterCutoutPath);
     }
 

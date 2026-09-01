@@ -7,21 +7,35 @@ const profiles = JSON.parse(
 );
 
 const archetypes = profiles._arquetiposDePersonagem || {};
+const formatTemplates = [
+  { key: "jornal", label: "Jornal", tone: "notícia rápida, urgente e comentada", themes: ["notícias", "fatos", "assuntos do momento"] },
+  { key: "conspira", label: "Conspira", tone: "teorias, segredos e perguntas desconfortáveis", themes: ["segredos", "teorias", "o que ninguém conta"] },
+  { key: "revela", label: "Revela", tone: "revelações surpreendentes sobre coisas que as pessoas não sabem", themes: ["curiosidades", "fatos desconhecidos", "descobertas"] },
+  { key: "analisa", label: "Analisa", tone: "análise crítica de séries, vídeos, notícias e comportamentos", themes: ["análise", "séries", "filmes", "comportamento"] },
+  { key: "explica", label: "Explica", tone: "explicação simples, visual e engraçada de assuntos complexos", themes: ["explicação", "como funciona", "ciência", "tecnologia"] },
+];
+
 Object.entries(archetypes).forEach(([arquetipo, archetype]) => {
   Object.entries(archetype.personagens || {}).forEach(([characterKey, character]) => {
-    const profileKey = `jornal_${characterKey}`;
-    if (profiles[profileKey]) return;
-    profiles[profileKey] = {
-      personagem: character.nome,
-      arquetipo,
-      personagemKey: characterKey,
-      nomeFormato: `Jornal do ${character.nome}`,
-      tom: `${archetype.descricao}, comentando fatos e tendencias atuais`,
-      temas: ["noticias", "internet", "comportamento", "tendencias"],
-      bordao: `Se voce nao esta sabendo de nada, ja se prepara que vai comecar o Jornal do ${character.nome}`,
-      cta1_crescimento: `segue o Jornal do ${character.nome}`,
-      cta2_monetizacao: "segue para nao perder a proxima noticia",
-    };
+    formatTemplates.forEach((format) => {
+      const profileKey = `${format.key}_${characterKey}`;
+      if (profiles[profileKey]) return;
+      const displayName = character.nome.split(/\s+/)[0];
+      const formatName = format.key === "jornal"
+        ? `Jornal do ${displayName}`
+        : `${displayName} ${format.label}`;
+      profiles[profileKey] = {
+        personagem: character.nome,
+        arquetipo,
+        personagemKey: characterKey,
+        nomeFormato: formatName,
+        tom: `${format.tone}; ${archetype.descricao}`,
+        temas: format.themes,
+        bordao: `Se voce nao esta sabendo de nada, ja se prepara que vai comecar o ${formatName}`,
+        cta1_crescimento: `segue o ${formatName}`,
+        cta2_monetizacao: "segue para nao perder a proxima descoberta",
+      };
+    });
   });
 });
 const hookData = profiles._ganchos || {};
