@@ -3,28 +3,27 @@ const fetch = require("node-fetch");
 const SEARCH_URL = "https://www.googleapis.com/youtube/v3/search";
 const VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos";
 
-const CHARACTER_FORMATS = [
-  ["Peter Griffin", ["Jornal do Peter", "Peter Conspira", "Peter Revela", "Peter Analisa", "Peter Explica"]],
-  ["Rick Sanchez", ["Jornal do Rick", "Rick Conspira", "Rick Revela", "Rick Analisa", "Rick Explica"]],
-  ["Cartman", ["Jornal do Cartman", "Cartman Conspira", "Cartman Revela", "Cartman Analisa", "Cartman Explica"]],
-  ["Gumball", ["Jornal do Gumball", "Gumball Conspira", "Gumball Revela", "Gumball Analisa", "Gumball Explica"]],
+const SEARCH_GROUPS = [
+  { character: "Peter Griffin", format: "Jornal do Peter", aliases: "Peter revela Peter conspira canal do Peter" },
+  { character: "Rick Sanchez", format: "Jornal do Rick", aliases: "Rick revela Rick conspira canal do Rick" },
+  { character: "Cartman", format: "Jornal do Cartman", aliases: "Jornal do Cartman canal Cartman Canal Cartman" },
+  { character: "Gumball", format: "Jornal do Gumball", aliases: "Gumball revela Gumball conspira canal Gumball" },
 ];
 
-const FORMAT_SEARCH_TERMS = {
-  Jornal: "noticia atual comentario",
-  Conspira: "teoria segredo conspiracao",
-  Revela: "curiosidades fatos desconhecidos revelacao",
-  Analisa: "analise serie filme comportamento",
-  Explica: "explicacao ciencia tecnologia como funciona",
-};
+const FORMAT_SEARCH_TERMS = [
+  { format: "Revela", terms: "revela curiosidades fatos desconhecidos" },
+  { format: "Conspira", terms: "conspiração teoria segredo verdade escondida" },
+  { format: "Analisa", terms: "analisa série filme desenho comportamento" },
+  { format: "Explica", terms: "explica ciência tecnologia como funciona" },
+  { format: "Jornal", terms: "notícia viral atual comentário" },
+];
 
-const QUERY_DEFINITIONS = CHARACTER_FORMATS.flatMap(([character, formats]) =>
-  formats.map((format) => ({
-    query: `${character} ${format} ${FORMAT_SEARCH_TERMS[format.split(" ").pop()] || ""}`,
-    character,
-    format,
-  }))
-);
+const QUERY_DEFINITIONS = SEARCH_GROUPS.flatMap((group) => FORMAT_SEARCH_TERMS.map((format) => ({
+  query: `${group.character} ${format.terms} ${group.aliases}`,
+  character: group.character,
+  format: `${group.character} ${format.format}`,
+})));
+const MIN_VIEWS = 10000;
 const QUERIES = QUERY_DEFINITIONS.map((item) => item.query);
 
 async function searchQuery(definition, apiKey) {
@@ -73,7 +72,7 @@ async function searchQuery(definition, apiKey) {
     personagem: character,
     formato: format,
     plataforma: "youtube",
-  }));
+  })).filter((video) => video.visualizacoes >= MIN_VIEWS);
 }
 
 /**
@@ -107,4 +106,4 @@ async function fetchYoutubeTrends() {
   return merged.slice(0, 30);
 }
 
-module.exports = { fetchYoutubeTrends, QUERIES, QUERY_DEFINITIONS };
+module.exports = { fetchYoutubeTrends, QUERIES, QUERY_DEFINITIONS, MIN_VIEWS };
