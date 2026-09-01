@@ -4,6 +4,8 @@ const REFRESH_MS = 5 * 60 * 1000; // 5 minutos
 
 let cache = {
   youtube: [],
+  tiktok: [],
+  tiktokStatus: "indisponivel: TikTok Research API exige aprovacao",
   atualizadoEm: null,
   erro: null,
 };

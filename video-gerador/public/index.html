@@ -133,9 +133,8 @@
     <div class="card">
       <div class="updated-at" id="trendsUpdated">Carregando...</div>
       <p class="sub" style="margin:0 0 10px">
-        YouTube, últimos 30 dias, ordenado por visualizações. Atualiza sozinho a cada 5min.
-        <br/><em>TikTok não tem API pública de tendências pra qualquer dev — esse painel fica
-        só com YouTube por enquanto.</em>
+        YouTube, últimos 30 dias, filtrado pelos personagens e formatos editoriais. Atualiza sozinho a cada 5min.
+        <br/><em>TikTok: a busca oficial exige acesso aprovado à Research API; o token de publicação não pesquisa vídeos.</em>
       </p>
       <div class="trend-grid" id="trendGrid"></div>
     </div>
@@ -171,13 +170,13 @@ async function loadTrends() {
       return;
     }
     const dt = data.atualizadoEm ? new Date(data.atualizadoEm).toLocaleTimeString('pt-BR') : '—';
-    updated.textContent = `Atualizado às ${dt} · ${data.youtube.length} vídeos`;
+    updated.textContent = `Atualizado às ${dt} · ${data.youtube.length} vídeos do YouTube`;
     grid.innerHTML = data.youtube.map(v => `
       <a class="trend-card" href="${v.url}" target="_blank" style="text-decoration:none;color:inherit">
         <img src="${v.thumbnail}" loading="lazy" />
         <div class="info">
           <p class="titulo">${v.titulo}</p>
-          <div class="meta"><span>${v.canal}</span><span>👁 ${formatViews(v.visualizacoes)}</span></div>
+          <div class="meta"><span>${v.personagem || ''} · ${v.formato || ''}</span><span>👁 ${formatViews(v.visualizacoes)}</span></div>
         </div>
       </a>
     `).join('');
