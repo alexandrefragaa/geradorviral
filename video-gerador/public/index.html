@@ -347,6 +347,7 @@ document.getElementById('btnAutoPilot').addEventListener('click', async () => {
     preview.style.display = 'block';
     document.getElementById('publishBox').style.display = 'block';
     currentJobId = data.jobId;
+    window.location.href = `/review.html?video=${encodeURIComponent(data.videoUrl)}&jobId=${encodeURIComponent(data.jobId)}&topic=${encodeURIComponent(data.topic || '')}&channel=${encodeURIComponent(data.channelKey || '')}&script=${encodeURIComponent(data.script || '')}`;
   } catch (e) {
     status.textContent = 'Erro no AutoPilot: ' + e.message;
   }
@@ -392,6 +393,7 @@ document.getElementById('btnGenerate').addEventListener('click', async () => {
     status.textContent = 'Pronto! ✅';
     preview.src = data.videoUrl;
     preview.style.display = 'block';
+    window.location.href = `/review.html?video=${encodeURIComponent(data.videoUrl)}&jobId=${encodeURIComponent(data.jobId)}&topic=${encodeURIComponent(topic || '')}&channel=${encodeURIComponent(channelKey || '')}&script=${encodeURIComponent(script || '')}`;
     currentJobId = data.jobId;
     document.getElementById('publishBox').style.display = 'block';
   } catch (e) {

@@ -98,6 +98,15 @@
     margin-bottom: 10px;
   }
 
+  #finalVideo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+  }
+
   .preview-bg {
     position: absolute;
     inset: 0;
@@ -475,6 +484,7 @@
   <p class="subtitle">Confere se ficou <strong>viral vibe alta</strong> antes de publicar.</p>
 
   <div class="preview-wrap">
+    <video id="finalVideo" controls playsinline preload="metadata"></video>
     <div class="preview-bg"></div>
     <span class="vibe-tag">Viral vibe alta</span>
     <div class="character-photo">personagem<br>(vídeo + fundo)</div>
@@ -554,6 +564,35 @@
 </div>
 
 <script>
+  const reviewParams = new URLSearchParams(window.location.search);
+  const finalVideo = document.getElementById('finalVideo');
+  const videoUrl = reviewParams.get('video');
+  const topic = reviewParams.get('topic');
+  const channel = reviewParams.get('channel');
+  const script = reviewParams.get('script');
+
+  if (videoUrl) {
+    finalVideo.src = videoUrl;
+    document.querySelector('.preview-bg').style.display = 'none';
+    document.querySelector('.character-photo').style.display = 'none';
+    document.querySelector('.caption-overlay').style.display = 'none';
+    document.querySelector('.play-btn').style.display = 'none';
+  }
+  if (topic) document.querySelector('h1').textContent = 'Vídeo pronto para revisar';
+  if (channel) document.querySelector('.subtitle strong').textContent = channel.replaceAll('_', ' ');
+  if (script) {
+    const description = document.getElementById('descInput');
+    description.value = `${topic || 'Novo vídeo'}\n\n${script}`.slice(0, 2000);
+  }
+
+  finalVideo.addEventListener('loadedmetadata', () => {
+    const duration = Math.round(finalVideo.duration || 0);
+    const minutes = Math.floor(duration / 60);
+    const seconds = String(duration % 60).padStart(2, '0');
+    document.querySelector('.status-pill').textContent = `Editado · ${minutes}:${seconds}`;
+    document.querySelectorAll('.scrub-time')[1].textContent = `${minutes}:${seconds}`;
+  });
+
   const playBtn = document.getElementById('playBtn');
   const playIcon = document.getElementById('playIcon');
   let playing = false;
@@ -578,7 +617,7 @@
   });
 
   document.getElementById('backBtn').addEventListener('click', () => {
-    alert('Voltaria pra tela de edição (camada selecionada fica editável).');
+    window.history.back();
   });
 
   document.getElementById('publishBtn').addEventListener('click', () => {
