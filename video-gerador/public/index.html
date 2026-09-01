@@ -193,7 +193,8 @@ async function loadStyles() {
   const res = await fetch('/styles');
   const styles = await res.json();
   const select = document.getElementById('channelKey');
-  select.innerHTML = styles.map(s => `<option value="${s.key}">${s.personagem} — ${s.arquetipo}</option>`).join('');
+  select.innerHTML = `<option value="">Automático — escolher pelo personagem/tema</option>` +
+    styles.map(s => `<option value="${s.key}">${s.personagem} — ${s.nomeFormato || s.arquetipo}</option>`).join('');
 }
 loadStyles();
 
@@ -261,10 +262,11 @@ document.getElementById('btnScript').addEventListener('click', async () => {
     const res = await fetch('/generate-script', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ channelKey, topic, targetDuration, variacoes }),
+      body: JSON.stringify({ channelKey, characterKey: document.getElementById('characterKey').value, topic, targetDuration, variacoes }),
     });
     const data = await res.json();
     if (data.error) throw new Error(data.error);
+    if (data.channelKey) document.getElementById('channelKey').value = data.channelKey;
     if (Array.isArray(data.script)) {
       document.getElementById('script').value = data.script[0];
       status.textContent = 'Gerou ' + data.script.length + ' variações. Variação 1 está no campo.\n\n---\n\n' +

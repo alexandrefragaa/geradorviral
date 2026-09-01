@@ -5,6 +5,25 @@ const path = require("path");
 const profiles = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../../data/trendProfiles.json"), "utf-8")
 );
+
+const archetypes = profiles._arquetiposDePersonagem || {};
+Object.entries(archetypes).forEach(([arquetipo, archetype]) => {
+  Object.entries(archetype.personagens || {}).forEach(([characterKey, character]) => {
+    const profileKey = `jornal_${characterKey}`;
+    if (profiles[profileKey]) return;
+    profiles[profileKey] = {
+      personagem: character.nome,
+      arquetipo,
+      personagemKey: characterKey,
+      nomeFormato: `Jornal do ${character.nome}`,
+      tom: `${archetype.descricao}, comentando fatos e tendencias atuais`,
+      temas: ["noticias", "internet", "comportamento", "tendencias"],
+      bordao: `Se voce nao esta sabendo de nada, ja se prepara que vai comecar o Jornal do ${character.nome}`,
+      cta1_crescimento: `segue o Jornal do ${character.nome}`,
+      cta2_monetizacao: "segue para nao perder a proxima noticia",
+    };
+  });
+});
 const hookData = profiles._ganchos || {};
 const ganchosAbertura = hookData.ganchosAbertura || [];
 const bordaoTemplates = {

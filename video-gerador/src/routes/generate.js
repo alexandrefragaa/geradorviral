@@ -174,16 +174,20 @@ router.get("/trends", (req, res) => {
 // variacoes: gera N roteiros com ganchos diferentes pra testar formato (A/B)
 router.post("/generate-script", express.json(), async (req, res) => {
   try {
-    const { channelKey, topic, targetDuration, variacoes } = req.body;
-    if (!channelKey || !topic) {
-      return res.status(400).json({ error: "Faltam campos: channelKey, topic" });
+    const { channelKey, characterKey, topic, targetDuration, variacoes } = req.body;
+    if (!topic) {
+      return res.status(400).json({ error: "Falta o campo: topic" });
     }
-    const script = await generateScript(channelKey, topic, {
+    const styles = listProfiles();
+    const selectedProfile = styles.find((profile) => profile.key === channelKey)
+      || styles.find((profile) => profile.personagemKey === characterKey)
+      || pickProfileForTopic(topic, styles);
+    const script = await generateScript(selectedProfile.key, topic, {
       targetDuration: targetDuration || 60,
       variacoes: variacoes || 1,
     });
     const analysis = analyzeScript(Array.isArray(script) ? script[0] : script);
-    res.json({ script, analysis });
+    res.json({ script, analysis, channelKey: selectedProfile.key, profile: selectedProfile });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
