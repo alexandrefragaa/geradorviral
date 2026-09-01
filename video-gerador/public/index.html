@@ -93,6 +93,7 @@
     </div>
 
     <button class="secondary" id="btnScript">1. Gerar roteiro</button>
+    <button class="secondary" id="btnAutoPilot" style="margin-top:8px">AutoPilot: trend + roteiro + vídeo</button>
 
     <label>Roteiro (revise/edite antes de renderizar)</label>
     <textarea id="script"></textarea>
@@ -224,13 +225,37 @@ document.getElementById('useUpload').addEventListener('change', (e) => {
 
 let currentJobId = null;
 
+async function applyTopTrendToForm() {
+  try {
+    const res = await fetch('/trends');
+    const data = await res.json();
+    const trend = data && data.youtube && data.youtube[0];
+    if (!trend) return false;
+    document.getElementById('topic').value = trend.titulo;
+    const matchingProfile = Array.from(document.getElementById('channelKey').options).find((opt) =>
+      (trend.titulo || '').toLowerCase().includes(opt.text.toLowerCase().split('—')[0].trim().toLowerCase()) ||
+      (trend.titulo || '').toLowerCase().includes('conspira')
+    );
+    if (matchingProfile) {
+      document.getElementById('channelKey').value = matchingProfile.value;
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 document.getElementById('btnScript').addEventListener('click', async () => {
   const channelKey = document.getElementById('channelKey').value;
-  const topic = document.getElementById('topic').value;
+  let topic = document.getElementById('topic').value;
   const targetDuration = Number(document.getElementById('targetDuration').value);
   const variacoes = Number(document.getElementById('variacoes').value);
   const status = document.getElementById('status');
-  if (!topic) return alert('Digita o tema do vídeo');
+  if (!topic) {
+    const used = await applyTopTrendToForm();
+    topic = document.getElementById('topic').value;
+    if (!used || !topic) return alert('Digita o tema do vídeo');
+  }
   status.textContent = 'Gerando roteiro...';
   try {
     const res = await fetch('/generate-script', {
@@ -241,7 +266,6 @@ document.getElementById('btnScript').addEventListener('click', async () => {
     const data = await res.json();
     if (data.error) throw new Error(data.error);
     if (Array.isArray(data.script)) {
-      // várias variações: mostra a primeira no campo e o resto no status pra comparar
       document.getElementById('script').value = data.script[0];
       status.textContent = 'Gerou ' + data.script.length + ' variações. Variação 1 está no campo.\n\n---\n\n' +
         data.script.map((s, i) => `VARIAÇÃO ${i + 1}:\n${s}`).join('\n\n---\n\n');
@@ -251,6 +275,40 @@ document.getElementById('btnScript').addEventListener('click', async () => {
     }
   } catch (e) {
     status.textContent = 'Erro: ' + e.message;
+  }
+});
+
+document.getElementById('btnAutoPilot').addEventListener('click', async () => {
+  const status = document.getElementById('status');
+  status.textContent = 'AutoPilot ativado: buscando tendência, roteiro e render final...';
+  try {
+    const res = await fetch('/autopilot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        targetDuration: Number(document.getElementById('targetDuration').value),
+      }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    document.getElementById('topic').value = data.topic;
+    document.getElementById('channelKey').value = data.channelKey;
+    document.getElementById('characterKey').value = data.characterKey;
+    document.getElementById('voiceKey').value = data.voiceKey;
+    document.getElementById('script').value = data.script;
+    document.getElementById('backgrounds').value = (data.selectedBackgrounds || []).join(', ');
+    document.getElementById('outfit').value = data.outfitHint || '';
+
+    status.textContent = `AutoPilot concluído ✅\n\nTema: ${data.topic}\nPerfil: ${data.channelKey}\nPersonagem: ${data.characterKey}\n\nViral score: ${data.analysis.score}/100 — ${data.analysis.isViral ? 'viral' : data.analysis.isMagnetic ? 'magnético' : 'fraco'}`;
+
+    const preview = document.getElementById('preview');
+    preview.src = data.videoUrl;
+    preview.style.display = 'block';
+    document.getElementById('publishBox').style.display = 'block';
+    currentJobId = data.jobId;
+  } catch (e) {
+    status.textContent = 'Erro no AutoPilot: ' + e.message;
   }
 });
 
