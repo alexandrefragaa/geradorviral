@@ -189,12 +189,24 @@ setInterval(() => {
   if (document.getElementById('panel-trends').classList.contains('active')) loadTrends();
 }, 60 * 1000);
 
+let availableStyles = [];
+
+function renderStylesForCharacter() {
+  const select = document.getElementById('channelKey');
+  const characterKey = document.getElementById('characterKey').value;
+  const currentValue = select.value;
+  const styles = characterKey
+    ? availableStyles.filter(s => s.personagemKey === characterKey)
+    : availableStyles;
+  select.innerHTML = `<option value="">Automático — escolher pelo personagem/tema</option>` +
+    styles.map(s => `<option value="${s.key}">${s.nomeFormato || s.personagem} — ${s.arquetipo}</option>`).join('');
+  if (styles.some(s => s.key === currentValue)) select.value = currentValue;
+}
+
 async function loadStyles() {
   const res = await fetch('/styles');
-  const styles = await res.json();
-  const select = document.getElementById('channelKey');
-  select.innerHTML = `<option value="">Automático — escolher pelo personagem/tema</option>` +
-    styles.map(s => `<option value="${s.key}">${s.personagem} — ${s.nomeFormato || s.arquetipo}</option>`).join('');
+  availableStyles = await res.json();
+  renderStylesForCharacter();
 }
 loadStyles();
 
@@ -215,8 +227,11 @@ async function loadCharacters() {
   select.innerHTML = Object.entries(grupos).map(([arq, chars]) =>
     `<optgroup label="${arq}">${chars.map(c => `<option value="${c.key}">${c.nome}</option>`).join('')}</optgroup>`
   ).join('');
+  renderStylesForCharacter();
 }
 loadCharacters();
+
+document.getElementById('characterKey').addEventListener('change', renderStylesForCharacter);
 
 document.getElementById('useUpload').addEventListener('change', (e) => {
   document.getElementById('character').style.display = e.target.checked ? 'block' : 'none';
