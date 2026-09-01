@@ -242,10 +242,25 @@ document.getElementById('useUpload').addEventListener('change', (e) => {
 
 let currentJobId = null;
 
+async function readJsonResponse(response) {
+  const body = await response.text();
+  if (!body.trim()) {
+    throw new Error(`Servidor respondeu vazio (HTTP ${response.status}). Verifique os logs do Render.`);
+  }
+  let data;
+  try {
+    data = JSON.parse(body);
+  } catch (error) {
+    throw new Error(`Servidor respondeu algo que não é JSON (HTTP ${response.status}): ${body.slice(0, 180)}`);
+  }
+  if (!response.ok) throw new Error(data.error || `Servidor respondeu HTTP ${response.status}`);
+  return data;
+}
+
 async function applyTopTrendToForm() {
   try {
     const res = await fetch('/trends');
-    const data = await res.json();
+    const data = await readJsonResponse(res);
     const trend = data && data.youtube && data.youtube[0];
     if (!trend) return false;
     document.getElementById('topic').value = trend.titulo;
@@ -280,7 +295,7 @@ document.getElementById('btnScript').addEventListener('click', async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ channelKey, characterKey: document.getElementById('characterKey').value, topic, targetDuration, variacoes }),
     });
-    const data = await res.json();
+    const data = await readJsonResponse(res);
     if (data.error) throw new Error(data.error);
     if (data.channelKey) document.getElementById('channelKey').value = data.channelKey;
     if (Array.isArray(data.script)) {
