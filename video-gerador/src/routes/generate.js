@@ -136,6 +136,7 @@ const { transcribeWithTimestamps } = require("../services/transcribe");
 const { cutoutCharacter } = require("../services/cutout");
 const { buildStyledSubtitles } = require("../services/subtitles");
 const { composeVideo } = require("../services/compose");
+const { removeVoiceSilence } = require("../services/audio");
 const { buildCreativePlan, analyzeChannelHistory } = require("../services/channelAnalyzer");
 
 const router = express.Router();
@@ -251,9 +252,11 @@ router.post("/autopilot", express.json(), async (req, res) => {
 
     const voicePath = path.join(workDir, "voice.mp3");
     await generateVoice(selection.script, selection.voiceKey, voicePath);
-    const duration = await getAudioDuration(voicePath);
+    const cleanVoicePath = path.join(workDir, "voice-clean.mp3");
+    await removeVoiceSilence(voicePath, cleanVoicePath);
+    const duration = await getAudioDuration(cleanVoicePath);
 
-    const words = await transcribeWithTimestamps(voicePath);
+    const words = await transcribeWithTimestamps(cleanVoicePath);
     const subtitlesPath = path.join(workDir, "captions.ass");
     buildStyledSubtitles(words, subtitlesPath, {});
 
@@ -276,7 +279,7 @@ router.post("/autopilot", express.json(), async (req, res) => {
     await composeVideo({
       backgroundPaths,
       characterPath: characterCutoutPath,
-      voicePath,
+      voicePath: cleanVoicePath,
       subtitlesPath,
       musicPath,
       duration,
@@ -364,10 +367,12 @@ router.post("/generate", upload.single("character"), async (req, res) => {
     // 1) Voz
     const voicePath = path.join(workDir, "voice.mp3");
     await generateVoice(script, voiceKey, voicePath);
-    const duration = await getAudioDuration(voicePath);
+    const cleanVoicePath = path.join(workDir, "voice-clean.mp3");
+    await removeVoiceSilence(voicePath, cleanVoicePath);
+    const duration = await getAudioDuration(cleanVoicePath);
 
     // 2) Transcrição com timestamp por palavra -> legenda
-    const words = await transcribeWithTimestamps(voicePath);
+    const words = await transcribeWithTimestamps(cleanVoicePath);
     const subtitlesPath = path.join(workDir, "captions.ass");
     buildStyledSubtitles(words, subtitlesPath, style ? JSON.parse(style) : {});
 
@@ -387,7 +392,7 @@ router.post("/generate", upload.single("character"), async (req, res) => {
     await composeVideo({
       backgroundPaths,
       characterPath: characterCutoutPath,
-      voicePath,
+      voicePath: cleanVoicePath,
       subtitlesPath,
       musicPath,
       duration,
