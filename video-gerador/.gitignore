@@ -5,3 +5,5 @@ output/*
 uploads/*
 !uploads/.gitkeep
 *.log
+data/studio-jobs/
+.impeccable/review/

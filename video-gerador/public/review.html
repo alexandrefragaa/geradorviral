@@ -8,28 +8,38 @@
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
   :root {
-    --bg: #16151A;
-    --panel: #1E1D24;
-    --panel-raised: #26252D;
-    --line: #322F3A;
-    --text: #EDEAE3;
-    --text-dim: #8C8A94;
-    --accent-publish: #FF5A38;
-    --accent-preview: #39D6C4;
-    --accent-publish-dim: #7A3527;
-    --accent-preview-dim: #1F4A45;
+    --bg: #14091f;
+    --panel: #1f1033;
+    --panel-raised: #2a1745;
+    --line: #3a2159;
+    --text: #fdf4ff;
+    --text-dim: #b79fd1;
+    --accent-publish: #ff6b35;
+    --accent-preview: #00e5ff;
+    --accent-publish-dim: #7a3527;
+    --accent-preview-dim: #1f4a52;
+    --accent-pink: #ff2fa0;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: var(--bg);
+    background:
+      radial-gradient(circle at 10% -10%, rgba(255,47,160,0.22) 0%, transparent 45%),
+      radial-gradient(circle at 90% 0%, rgba(255,182,39,0.14) 0%, transparent 40%),
+      radial-gradient(circle at 85% 100%, rgba(0,229,255,0.14) 0%, transparent 40%),
+      var(--bg);
     color: var(--text);
     font-family: 'Archivo', sans-serif;
     display: flex;
     justify-content: center;
     padding: 32px 16px;
     min-height: 100vh;
+  }
+
+  .sunset-bar {
+    height: 3px; border-radius: 3px; margin: 0 0 14px;
+    background: linear-gradient(90deg, #ffb627, var(--accent-publish), var(--accent-pink), var(--accent-preview));
   }
 
   .app {
@@ -78,6 +88,9 @@
     letter-spacing: -0.01em;
     line-height: 1.15;
     margin-bottom: 4px;
+    background: linear-gradient(90deg, #ffb627, var(--accent-pink) 60%, var(--accent-preview));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    display: inline-block;
   }
   .subtitle {
     color: var(--text-dim);
@@ -481,6 +494,7 @@
   </div>
 
   <h1>Vídeo reproduzido</h1>
+  <div class="sunset-bar"></div>
   <p class="subtitle">Confere se ficou <strong>viral vibe alta</strong> antes de publicar.</p>
 
   <div class="preview-wrap">
@@ -551,8 +565,12 @@
       </button>
     </div>
 
-    <label class="field-label" for="titleInput">Título</label>
-    <input type="text" id="titleInput" value="Jornal do Cartman: ninguém tava pronto pra essa" maxlength="100">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+      <label class="field-label" for="titleInput" style="margin-bottom:0">Título</label>
+      <button type="button" id="regenTitleBtn" style="background:none;border:1px dashed var(--accent-preview);color:var(--accent-preview);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;border-radius:6px;padding:4px 8px;cursor:pointer;margin-bottom:6px;">🎯 gerar com IA</button>
+    </div>
+    <input type="text" id="titleInput" placeholder="título gerado automaticamente a partir do roteiro" maxlength="100">
+    <p id="titleStatus" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin:-8px 0 12px;"></p>
 
     <label class="field-label" for="descInput">Descrição</label>
     <textarea id="descInput">se você não tá sabendo de nada, já se prepara 👀 segue o Jornal do Cartman</textarea>
@@ -570,6 +588,38 @@
   const topic = reviewParams.get('topic');
   const channel = reviewParams.get('channel');
   const script = reviewParams.get('script');
+  const incomingTitle = reviewParams.get('title');
+
+  const titleInput = document.getElementById('titleInput');
+  const titleStatus = document.getElementById('titleStatus');
+  if (incomingTitle) {
+    titleInput.value = incomingTitle;
+    titleStatus.textContent = 'gerado com IA a partir do roteiro';
+  } else if (!script) {
+    titleStatus.textContent = 'sem roteiro nesta sessão — escreva o título ou volte pra gerar de novo';
+  }
+
+  document.getElementById('regenTitleBtn').addEventListener('click', async () => {
+    if (!script) { alert('Não tem roteiro nesta sessão pra gerar o título. Volte e gere de novo.'); return; }
+    const btn = document.getElementById('regenTitleBtn');
+    btn.disabled = true; btn.textContent = 'gerando…';
+    titleStatus.textContent = 'gerando título com IA...';
+    try {
+      const res = await fetch('/generate-title', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ script, topic, channelKey: channel }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      titleInput.value = data.title;
+      titleStatus.textContent = 'gerado com IA a partir do roteiro';
+    } catch (e) {
+      titleStatus.textContent = 'erro ao gerar: ' + e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = '🎯 gerar com IA';
+    }
+  });
 
   if (videoUrl) {
     finalVideo.src = videoUrl;

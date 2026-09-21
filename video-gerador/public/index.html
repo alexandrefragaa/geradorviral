@@ -3,31 +3,73 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Gerador de Vídeo Viral</title>
+<title>Vice Studio · Gerador de Vídeo Viral</title>
+<link rel="stylesheet" href="/studio.css" />
+<script src="/studio.js" defer></script>
 <style>
-  :root { --bg: #0f0f14; --card: #17171f; --accent: #ff3b6b; --text: #f2f2f5; --muted: #8a8a9a; }
+  @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #14091f;
+    --bg-2: #1f1033;
+    --card: #22123a;
+    --card-border: #3a2159;
+    --accent: #ff2fa0;
+    --accent-2: #00e5ff;
+    --sunset-1: #ff6b35;
+    --sunset-2: #ffb627;
+    --text: #fdf4ff;
+    --muted: #b79fd1;
+  }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, Segoe UI, Roboto, sans-serif; padding: 24px; }
-  h1 { font-size: 22px; margin-bottom: 4px; }
+  body {
+    margin: 0; color: var(--text); font-family: 'Poppins', sans-serif; padding: 24px;
+    background:
+      radial-gradient(circle at 15% -10%, rgba(255,47,160,0.28) 0%, transparent 45%),
+      radial-gradient(circle at 90% 0%, rgba(255,182,39,0.18) 0%, transparent 40%),
+      radial-gradient(circle at 85% 100%, rgba(0,229,255,0.16) 0%, transparent 40%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  h1 {
+    font-family: 'Bungee', sans-serif; font-weight: 400; font-size: 24px; margin-bottom: 4px;
+    letter-spacing: 0.02em;
+    background: linear-gradient(90deg, var(--sunset-2), var(--accent) 55%, var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 26px rgba(255,47,160,0.35);
+    display: inline-block;
+  }
+  .sunset-bar { height: 3px; border-radius: 3px; margin: 0 0 18px; max-width: 420px;
+    background: linear-gradient(90deg, var(--sunset-2), var(--sunset-1), var(--accent), var(--accent-2)); }
   p.sub { color: var(--muted); margin-top: 0; margin-bottom: 24px; font-size: 14px; }
-  .card { background: var(--card); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .card { background: linear-gradient(180deg, var(--card), var(--bg-2)); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
   label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; margin-top: 14px; }
-  input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #2a2a35; background: #0f0f14; color: var(--text); font-size: 14px; }
+  input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--card-border); background: #150a22; color: var(--text); font-size: 14px; font-family: 'Poppins', sans-serif; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(0,229,255,0.15); }
   textarea { min-height: 90px; resize: vertical; }
-  button { margin-top: 18px; width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--accent); color: white; font-weight: 600; font-size: 15px; cursor: pointer; }
-  button:disabled { opacity: 0.5; cursor: not-allowed; }
-  button.secondary { background: #2a2a35; }
+  button {
+    margin-top: 18px; width: 100%; padding: 12px; border-radius: 10px; border: none;
+    background: linear-gradient(90deg, var(--accent), var(--sunset-1)); color: white;
+    font-weight: 700; font-size: 15px; cursor: pointer; font-family: 'Poppins', sans-serif; letter-spacing: 0.01em;
+    box-shadow: 0 6px 18px rgba(255,47,160,0.28); transition: filter 0.15s ease, transform 0.1s ease;
+  }
+  button:hover:not(:disabled) { filter: brightness(1.08); }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+  button.secondary { background: var(--bg-2); border: 1px solid var(--card-border); box-shadow: none; }
+  button.ghost { background: transparent; border: 1px dashed var(--accent-2); color: var(--accent-2); box-shadow: none; }
   #status { margin-top: 12px; font-size: 13px; color: var(--muted); white-space: pre-wrap; }
   video { width: 100%; border-radius: 12px; margin-top: 14px; }
   .row { display: flex; gap: 10px; }
   .row > div { flex: 1; }
   .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-  .tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #2a2a35; background: var(--card); color: var(--muted); cursor: pointer; font-size: 14px; font-weight: 600; }
-  .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--card-border); background: var(--card); color: var(--muted); cursor: pointer; font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .tab-btn.active { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: white; border-color: transparent; box-shadow: 0 0 16px rgba(0,229,255,0.35); }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
   .trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-  .trend-card { background: #0f0f14; border-radius: 10px; overflow: hidden; border: 1px solid #2a2a35; }
+  .trend-card { background: var(--bg-2); border-radius: 10px; overflow: hidden; border: 1px solid var(--card-border); }
   .trend-card img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
   .trend-card .info { padding: 8px 10px; }
   .trend-card .titulo { font-size: 12px; line-height: 1.3; margin: 0 0 4px; height: 32px; overflow: hidden; }
@@ -36,11 +78,13 @@
 </style>
 </head>
 <body>
-  <h1>🎬 Gerador de Vídeo Viral</h1>
-  <p class="sub">Sobe o personagem, escolhe o estilo, gera o roteiro e renderiza o vídeo.</p>
+  <h1>🌴 VICE STUDIO</h1>
+  <div class="sunset-bar"></div>
+  <p class="sub">Sobe o personagem, escolhe o estilo, gera o roteiro (com título automático) e renderiza o vídeo.</p>
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="gerar">Gerar vídeo</button>
+    <button class="tab-btn" data-tab="studio">Estúdio</button>
     <button class="tab-btn" data-tab="trends">🔥 Trends</button>
   </div>
 
@@ -122,11 +166,98 @@
         <div><label style="display:flex;align-items:center;gap:6px;color:var(--text)"><input type="checkbox" class="pubPlatform" value="instagram" style="width:auto" /> Instagram</label></div>
       </div>
       <label>Título/legenda</label>
-      <input type="text" id="pubCaption" placeholder="título ou legenda do post" />
+      <div class="row" style="align-items:flex-end">
+        <div><input type="text" id="pubCaption" placeholder="título ou legenda do post" /></div>
+      </div>
+      <button class="ghost" id="btnGenTitle" type="button" style="margin-top:8px">🎯 Gerar título com IA</button>
       <button class="secondary" id="btnPublish">3. Publicar</button>
       <div id="pubStatus" class="updated-at"></div>
     </div>
   </div>
+  </div>
+
+  <div class="tab-panel" id="panel-studio">
+    <div class="studio-intro">
+      <div><h2>Uma ideia. Vários vídeos.</h2><p>Crie cenas com IA ou transforme seus clipes em versões prontas para editar, testar e publicar.</p></div>
+      <a href="#studio-history">Ver minhas gerações</a>
+    </div>
+    <div id="studio-config" class="studio-note" role="status">Verificando os recursos disponíveis…</div>
+    <form id="studio-form">
+      <div class="studio-workspace">
+        <div class="studio-editor">
+          <fieldset class="studio-section">
+            <legend>Origem do vídeo</legend>
+            <div class="studio-choices">
+              <label><input type="radio" name="mode" value="recycle" checked /> Reaproveitar vídeo</label>
+              <label><input type="radio" name="mode" value="ai" /> Criar cenas com IA</label>
+            </div>
+            <div id="studio-recycle">
+              <label for="studio-video">Vídeo-base</label>
+              <input id="studio-video" name="video" type="file" accept=".mp4,.mov,.webm,.mkv" required />
+              <p class="studio-help">MP4, MOV, WebM ou MKV · até 250 MB. O áudio original é preservado.</p>
+              <div class="studio-row">
+                <div><label for="studio-start">Início do trecho (segundos)</label><input id="studio-start" name="start" type="number" min="0" max="7200" step="0.1" value="0" /></div>
+                <div><label for="studio-duration">Duração do trecho (segundos)</label><input id="studio-duration" name="duration" type="number" min="3" max="180" step="0.1" value="30" /></div>
+              </div>
+            </div>
+            <div id="studio-ai" hidden>
+              <label for="studio-prompts">Descreva suas cenas, uma por linha</label>
+              <textarea id="studio-prompts" name="prompts" rows="4" maxlength="2402" placeholder="Um carro esportivo atravessa uma avenida de Miami ao pôr do sol. Câmera acompanha pela lateral.&#10;O carro estaciona perto da praia, com palmeiras ao fundo."></textarea>
+              <p class="studio-help">Até 3 cenas. Conceito visual estilo Vice City (neon, pôr do sol, Miami dos anos 80), identificado no vídeo como criação por IA.</p>
+              <label for="studio-scene-duration">Duração de cada cena</label>
+              <select id="studio-scene-duration" name="sceneDuration"><option value="5">5 segundos</option><option value="10">10 segundos</option><option value="15">15 segundos</option></select>
+              <p class="studio-help">A geração usa créditos da sua conta fal.ai. As mesmas cenas são reutilizadas em todas as variações. A proporção de origem é vertical quando os dois formatos estão selecionados.</p>
+            </div>
+          </fieldset>
+          <fieldset class="studio-section">
+            <legend>Layouts e títulos</legend>
+            <p class="studio-help">Combine até 3 layouts com até 3 títulos para testar versões do mesmo conteúdo.</p>
+            <div class="studio-templates">
+              <label><input type="checkbox" name="templates" value="impacto" checked /><span class="template-diagram diagram-impact" aria-hidden="true"><span>TÍTULO</span><i>clipe</i></span><span>Título em destaque</span></label>
+              <label><input type="checkbox" name="templates" value="perfil" /><span class="template-diagram diagram-profile" aria-hidden="true"><span>Meu canal<br>Título</span><i>clipe</i></span><span>Card de perfil</span></label>
+              <label><input type="checkbox" name="templates" value="meme" /><span class="template-diagram diagram-meme" aria-hidden="true"><i>clipe</i><span>Título</span><i>imagem</i></span><span>Clipe + imagem</span></label>
+              <label><input type="checkbox" name="templates" value="cinema" /><span class="template-diagram diagram-cinema" aria-hidden="true"><span>Título discreto</span><i>clipe</i></span><span>Cinema</span></label>
+            </div>
+            <div id="studio-profile-options" hidden><label for="studio-creator">Nome do perfil</label><input id="studio-creator" name="creator" maxlength="40" value="Meu canal" /></div>
+            <div id="studio-reaction-options" hidden><label for="studio-reaction">Imagem para a composição</label><input id="studio-reaction" name="reaction" type="file" accept=".png,.jpg,.jpeg,.webp" /><p class="studio-help">PNG, JPG ou WebP · até 10 MB. Aparece abaixo do clipe no vertical e ao lado no horizontal.</p></div>
+            <label for="studio-headlines">Títulos em português — um por linha</label>
+            <textarea id="studio-headlines" name="headlines" rows="3" maxlength="302" placeholder="Esse detalhe mudou a cena inteira&#10;Você reparou no que aconteceu ao fundo?&#10;Qual seria sua próxima jogada?"></textarea>
+            <p class="studio-help">Até 100 caracteres por título. Deixe vazio para exportar sem título.</p>
+          </fieldset>
+          <fieldset class="studio-section">
+            <legend>Legendas e formatos</legend>
+            <label for="studio-captions">Legendas em português</label>
+            <select id="studio-captions" name="captionMode"><option value="none">Sem legendas</option><option value="pt">Transcrever fala que já está em português</option><option value="translate">Traduzir a fala para português</option></select>
+            <p class="studio-help">A tradução altera as legendas; a voz continua no idioma original. Legendas sincronizadas por frase.</p>
+            <div class="studio-choices">
+              <label><input type="checkbox" name="formats" value="vertical" checked /> 9:16 · Shorts, TikTok e Reels</label>
+              <label><input type="checkbox" name="formats" value="landscape" /> 16:9 · YouTube</label>
+            </div>
+            <label for="studio-fit">Enquadramento</label>
+            <select id="studio-fit" name="fit"><option value="contain">Preservar a cena inteira (adicionar faixas)</option><option value="cover">Preencher o quadro (cortar pelas bordas)</option></select>
+          </fieldset>
+          <div class="studio-submit"><p id="studio-summary">1 vídeo será exportado.</p><button id="studio-submit" type="submit">Gerar versões</button><p id="studio-form-error" role="alert"></p></div>
+        </div>
+        <aside class="studio-preview-pane" aria-label="Prévia do layout">
+          <h3>Composição</h3>
+          <label for="studio-preview-template">Visualizar layout</label><select id="studio-preview-template"><option value="impacto">Título em destaque</option><option value="perfil">Card de perfil</option><option value="meme">Clipe + imagem</option><option value="cinema">Cinema</option></select>
+          <div id="studio-mockup" class="studio-mockup" data-template="impacto">
+            <span id="studio-preview-creator">Meu canal</span>
+            <div class="studio-preview-media"><video id="studio-source-preview" muted controls playsinline hidden></video><p id="studio-empty-preview">Seu vídeo<br>aparece aqui</p></div>
+            <p id="studio-preview-headline">Seu título em português</p>
+            <div class="studio-preview-reaction"><img id="studio-reaction-preview" alt="Imagem da composição" hidden /><span id="studio-reaction-empty">Sua imagem</span></div>
+          </div>
+          <p class="studio-help">Esquema de composição vertical. A renderização aplica o enquadramento, as legendas e cada formato selecionado.</p>
+        </aside>
+      </div>
+    </form>
+    <section id="studio-active" class="studio-section" hidden aria-labelledby="studio-active-title">
+      <h3 id="studio-active-title">Acompanhar geração</h3><p id="studio-job-status" role="status" aria-live="polite"></p>
+      <progress id="studio-progress" max="100" value="0" aria-label="Etapas concluídas"></progress>
+      <p id="studio-job-error" role="alert"></p><p id="studio-job-warnings" class="studio-help"></p>
+      <div id="studio-results" class="studio-results"></div><div id="studio-subtitles"></div>
+    </section>
+    <section id="studio-history" class="studio-section" aria-labelledby="studio-history-title"><h3 id="studio-history-title">Minhas gerações</h3><p class="studio-help">Os resultados ficam salvos neste servidor.</p><div id="studio-history-list">Carregando histórico…</div></section>
   </div>
 
   <div class="tab-panel" id="panel-trends">
@@ -242,6 +373,37 @@ document.getElementById('useUpload').addEventListener('change', (e) => {
 
 let currentJobId = null;
 
+// Gera um título com IA a partir do roteiro final (usa a ANTHROPIC_API_KEY já configurada no servidor)
+async function generateTitleFromScript({ script, topic, channelKey, characterKey }) {
+  if (!script) return null;
+  try {
+    const res = await fetch('/generate-title', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ script, topic, channelKey, characterKey }),
+    });
+    const data = await readJsonResponse(res);
+    return data.title || null;
+  } catch (e) {
+    console.warn('Não foi possível gerar título automático:', e.message);
+    return null;
+  }
+}
+
+document.getElementById('btnGenTitle').addEventListener('click', async () => {
+  const btn = document.getElementById('btnGenTitle');
+  const script = document.getElementById('script').value;
+  const topic = document.getElementById('topic').value;
+  const channelKey = document.getElementById('channelKey').value;
+  const characterKey = document.getElementById('characterKey').value;
+  if (!script) return alert('Gere ou escreva o roteiro antes de pedir um título.');
+  btn.disabled = true; btn.textContent = 'Gerando…';
+  const title = await generateTitleFromScript({ script, topic, channelKey, characterKey });
+  btn.disabled = false; btn.textContent = '🎯 Gerar título com IA';
+  if (title) document.getElementById('pubCaption').value = title;
+  else alert('Não deu pra gerar o título agora. Confere a ANTHROPIC_API_KEY no servidor.');
+});
+
 async function readJsonResponse(response) {
   const body = await response.text();
   if (!body.trim()) {
@@ -347,7 +509,12 @@ document.getElementById('btnAutoPilot').addEventListener('click', async () => {
     preview.style.display = 'block';
     document.getElementById('publishBox').style.display = 'block';
     currentJobId = data.jobId;
-    window.location.href = `/review.html?video=${encodeURIComponent(data.videoUrl)}&jobId=${encodeURIComponent(data.jobId)}&topic=${encodeURIComponent(data.topic || '')}&channel=${encodeURIComponent(data.channelKey || '')}&script=${encodeURIComponent(data.script || '')}`;
+
+    status.textContent += '\n\nGerando título com IA...';
+    const title = await generateTitleFromScript({ script: data.script, topic: data.topic, channelKey: data.channelKey, characterKey: data.characterKey });
+    if (title) document.getElementById('pubCaption').value = title;
+
+    window.location.href = `/review.html?video=${encodeURIComponent(data.videoUrl)}&jobId=${encodeURIComponent(data.jobId)}&topic=${encodeURIComponent(data.topic || '')}&channel=${encodeURIComponent(data.channelKey || '')}&script=${encodeURIComponent(data.script || '')}&title=${encodeURIComponent(title || '')}`;
   } catch (e) {
     status.textContent = 'Erro no AutoPilot: ' + e.message;
   }
@@ -364,6 +531,8 @@ document.getElementById('btnGenerate').addEventListener('click', async () => {
   const backgrounds = document.getElementById('backgrounds').value;
   const music = document.getElementById('music').value;
   const script = document.getElementById('script').value;
+  const topic = document.getElementById('topic').value;
+  const channelKey = document.getElementById('channelKey').value;
 
   if ((useUpload && !characterFile) || !voiceKey || !backgrounds || !script) {
     return alert('Preenche: personagem, voz, fundos e roteiro (gere no passo 1 ou escreva o seu)');
@@ -390,12 +559,17 @@ document.getElementById('btnGenerate').addEventListener('click', async () => {
     const res = await fetch('/generate', { method: 'POST', body: form });
     const data = await res.json();
     if (data.error) throw new Error(data.error);
-    status.textContent = 'Pronto! ✅';
+    status.textContent = 'Pronto! ✅ Gerando título com IA...';
     preview.src = data.videoUrl;
     preview.style.display = 'block';
-    window.location.href = `/review.html?video=${encodeURIComponent(data.videoUrl)}&jobId=${encodeURIComponent(data.jobId)}&topic=${encodeURIComponent(topic || '')}&channel=${encodeURIComponent(channelKey || '')}&script=${encodeURIComponent(script || '')}`;
     currentJobId = data.jobId;
     document.getElementById('publishBox').style.display = 'block';
+
+    const title = await generateTitleFromScript({ script, topic, channelKey, characterKey });
+    if (title) document.getElementById('pubCaption').value = title;
+    status.textContent = 'Pronto! ✅';
+
+    window.location.href = `/review.html?video=${encodeURIComponent(data.videoUrl)}&jobId=${encodeURIComponent(data.jobId)}&topic=${encodeURIComponent(topic || '')}&channel=${encodeURIComponent(channelKey || '')}&script=${encodeURIComponent(script || '')}&title=${encodeURIComponent(title || '')}`;
   } catch (e) {
     status.textContent = 'Erro: ' + e.message;
   } finally {

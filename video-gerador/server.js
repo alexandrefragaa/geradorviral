@@ -5,6 +5,8 @@ const path = require("path");
 
 const generateRoute = require("./src/routes/generate");
 const publishRoute = require("./src/routes/publish");
+const studioRoute = require("./src/routes/studio");
+const titleRoute = require("./src/routes/title");
 const { startTrendsRefresher } = require("./src/services/trendsCache");
 
 const app = express();
@@ -19,11 +21,15 @@ app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/", generateRoute);
 app.use("/", publishRoute);
+app.use("/", titleRoute);
+app.use("/api/studio", studioRoute);
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+if (require.main === module) app.listen(PORT, () => {
   console.log(`Motor de vídeo rodando em http://localhost:${PORT}`);
-  startTrendsRefresher();
+  if (process.env.DISABLE_TRENDS_REFRESH !== "1") startTrendsRefresher();
 });
+
+module.exports = app;
