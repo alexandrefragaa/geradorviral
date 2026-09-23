@@ -67,7 +67,10 @@
   .tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--card-border); background: var(--card); color: var(--muted); cursor: pointer; font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
   .tab-btn.active { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: white; border-color: transparent; box-shadow: 0 0 16px rgba(0,229,255,0.35); }
   .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+  .tab-panel.active { display: block; animation: tabFadeIn 0.35s ease; }
+  @keyframes tabFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .card { animation: cardRise 0.4s ease both; }
+  @keyframes cardRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
   .trend-card { background: var(--bg-2); border-radius: 10px; overflow: hidden; border: 1px solid var(--card-border); }
   .trend-card img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
@@ -75,12 +78,141 @@
   .trend-card .titulo { font-size: 12px; line-height: 1.3; margin: 0 0 4px; height: 32px; overflow: hidden; }
   .trend-card .meta { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; }
   .updated-at { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+
+  /* ===== Hero Vice City (arte original, animada em CSS/SVG) ===== */
+  .vice-hero {
+    position: relative; border-radius: 18px; overflow: hidden; margin-bottom: 20px;
+    border: 1px solid var(--card-border); box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+    background: linear-gradient(180deg, #2a0f4a 0%, #6b1a6e 30%, #d63b7a 55%, #ff8a4c 78%, #ffcf6b 100%);
+  }
+  .vice-hero svg { display: block; width: 100%; height: auto; }
+  .vice-hero .hero-title {
+    position: absolute; left: 0; right: 0; bottom: 16px; text-align: center; z-index: 5; pointer-events: none;
+  }
+  .vice-hero .hero-title h1 {
+    margin: 0; font-size: clamp(26px, 5vw, 46px);
+    -webkit-text-stroke: 1px rgba(255,255,255,0.15);
+    filter: drop-shadow(0 0 18px rgba(255,47,160,0.55));
+  }
+  .vice-hero .hero-sub { color: rgba(255,255,255,0.85); font-family: 'Poppins',sans-serif; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
+
+  @keyframes sunPulse { 0%,100% { opacity: 0.85; r: 62; } 50% { opacity: 1; r: 68; } }
+  @keyframes cloudDriftSlow { from { transform: translateX(-6%); } to { transform: translateX(6%); } }
+  @keyframes cloudDriftFast { from { transform: translateX(8%); } to { transform: translateX(-8%); } }
+  @keyframes winkA { 0%,100% { opacity: 0.15; } 50% { opacity: 0.95; } }
+  @keyframes winkB { 0%,100% { opacity: 0.9; } 50% { opacity: 0.2; } }
+  @keyframes palmSway { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+  @keyframes birdFly { from { transform: translate(0,0); } to { transform: translate(120px,-14px); } }
+  @keyframes gridScroll { from { transform: translateY(0); } to { transform: translateY(22px); } }
+
+  .hero-sun { animation: sunPulse 5s ease-in-out infinite; transform-origin: center; }
+  .hero-cloud-slow { animation: cloudDriftSlow 26s ease-in-out infinite alternate; }
+  .hero-cloud-fast { animation: cloudDriftFast 16s ease-in-out infinite alternate; }
+  .hero-win-a { animation: winkA 3.4s ease-in-out infinite; }
+  .hero-win-b { animation: winkB 2.6s ease-in-out infinite; }
+  .hero-palm-l { animation: palmSway 4.5s ease-in-out infinite; transform-origin: 92px 260px; }
+  .hero-palm-r { animation: palmSway 5.2s ease-in-out infinite reverse; transform-origin: 1500px 250px; }
+  .hero-bird { animation: birdFly 9s linear infinite alternate; }
+  .hero-grid { animation: gridScroll 1.4s linear infinite; }
 </style>
 </head>
 <body>
-  <h1>🌴 VICE STUDIO</h1>
-  <div class="sunset-bar"></div>
-  <p class="sub">Sobe o personagem, escolhe o estilo, gera o roteiro (com título automático) e renderiza o vídeo.</p>
+  <div class="vice-hero">
+    <svg viewBox="0 0 1600 420" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fff3c4"/>
+          <stop offset="45%" stop-color="#ffb627"/>
+          <stop offset="100%" stop-color="#ff2fa0" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="skylineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2a0f3f"/>
+          <stop offset="100%" stop-color="#170a2a"/>
+        </linearGradient>
+      </defs>
+
+      <!-- sol -->
+      <circle class="hero-sun" cx="800" cy="230" r="150" fill="url(#sunGlow)"/>
+      <circle cx="800" cy="230" r="60" fill="#fff8e0"/>
+
+      <!-- nuvens -->
+      <g class="hero-cloud-slow" opacity="0.35">
+        <ellipse cx="260" cy="110" rx="180" ry="18" fill="#ffd7ea"/>
+        <ellipse cx="1250" cy="150" rx="220" ry="20" fill="#ffd7ea"/>
+      </g>
+      <g class="hero-cloud-fast" opacity="0.25">
+        <ellipse cx="620" cy="70" rx="140" ry="12" fill="#fff0f6"/>
+        <ellipse cx="1100" cy="90" rx="120" ry="12" fill="#fff0f6"/>
+      </g>
+
+      <!-- skyline -->
+      <g fill="url(#skylineGrad)">
+        <rect x="0" y="260" width="70" height="120"/>
+        <rect x="80" y="230" width="55" height="150"/>
+        <rect x="150" y="270" width="40" height="110"/>
+        <rect x="1200" y="240" width="60" height="140"/>
+        <rect x="1270" y="200" width="70" height="180"/>
+        <rect x="1350" y="255" width="45" height="125"/>
+        <rect x="1410" y="215" width="60" height="165"/>
+        <rect x="1480" y="260" width="120" height="120"/>
+      </g>
+      <!-- janelas piscando -->
+      <g fill="#ffe08a">
+        <rect class="hero-win-a" x="12" y="280" width="6" height="8"/>
+        <rect class="hero-win-b" x="28" y="300" width="6" height="8"/>
+        <rect class="hero-win-a" x="46" y="290" width="6" height="8"/>
+        <rect class="hero-win-b" x="96" y="255" width="6" height="8"/>
+        <rect class="hero-win-a" x="112" y="280" width="6" height="8"/>
+        <rect class="hero-win-b" x="1215" y="265" width="6" height="8"/>
+        <rect class="hero-win-a" x="1290" y="230" width="6" height="8"/>
+        <rect class="hero-win-b" x="1310" y="260" width="6" height="8"/>
+        <rect class="hero-win-a" x="1425" y="245" width="6" height="8"/>
+        <rect class="hero-win-b" x="1500" y="285" width="6" height="8"/>
+        <rect class="hero-win-a" x="1530" y="300" width="6" height="8"/>
+      </g>
+
+      <!-- palmeiras -->
+      <g class="hero-palm-l" fill="#1a0b2e">
+        <path d="M92 380 C90 320 96 280 92 260"/>
+        <path d="M92 380 C90 320 96 280 92 260" stroke="#1a0b2e" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M92 262 C40 240 20 210 10 190 C40 205 70 220 92 262 Z"/>
+        <path d="M92 262 C150 235 175 205 190 185 C155 205 120 218 92 262 Z"/>
+        <path d="M92 262 C55 275 25 275 0 268 C35 250 65 250 92 262 Z"/>
+        <path d="M92 262 C130 280 165 282 190 272 C155 250 120 250 92 262 Z"/>
+        <path d="M92 262 C80 220 85 200 100 180 C105 205 100 235 92 262 Z"/>
+      </g>
+      <g class="hero-palm-r" fill="#1a0b2e">
+        <path d="M1500 375 C1497 305 1504 270 1500 250" stroke="#1a0b2e" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M1500 252 C1440 228 1416 195 1404 172 C1440 190 1476 208 1500 252 Z"/>
+        <path d="M1500 252 C1566 222 1594 188 1610 165 C1570 188 1532 205 1500 252 Z"/>
+        <path d="M1500 252 C1458 268 1424 268 1396 260 C1435 240 1468 240 1500 252 Z"/>
+        <path d="M1500 252 C1542 272 1580 274 1608 262 C1570 240 1532 240 1500 252 Z"/>
+      </g>
+
+      <!-- pássaros -->
+      <g class="hero-bird" stroke="#1a0b2e" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M420 150 q10 -12 20 0 q10 -12 20 0"/>
+        <path d="M470 130 q8 -10 16 0 q8 -10 16 0"/>
+      </g>
+
+      <!-- estrada + grid synthwave -->
+      <rect x="0" y="380" width="1600" height="40" fill="#170a2a"/>
+      <g class="hero-grid" stroke="#ff2fa0" stroke-width="1.4" opacity="0.55">
+        <line x1="700" y1="380" x2="620" y2="420"/>
+        <line x1="760" y1="380" x2="740" y2="420"/>
+        <line x1="800" y1="380" x2="800" y2="420"/>
+        <line x1="840" y1="380" x2="860" y2="420"/>
+        <line x1="900" y1="380" x2="980" y2="420"/>
+        <line x1="0" y1="398" x2="1600" y2="398" opacity="0.6"/>
+        <line x1="0" y1="414" x2="1600" y2="414" opacity="0.4"/>
+      </g>
+    </svg>
+    <div class="hero-title">
+      <h1>🌴 VICE STUDIO</h1>
+      <div class="hero-sub">gerador automático de vídeo viral</div>
+    </div>
+  </div>
+  <p class="sub">Canal 100% GTA 6 — escolhe o tema, gera o roteiro narrado (sem personagem de desenho, com título automático) e renderiza o vídeo.</p>
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="gerar">Gerar vídeo</button>
@@ -90,33 +222,33 @@
 
   <div class="tab-panel active" id="panel-gerar">
   <div class="card">
-    <label>Personagem</label>
+    <label>Elemento visual (sem personagem)</label>
     <div class="row">
       <div>
         <select id="characterKey"></select>
       </div>
       <div>
-        <input type="text" id="outfit" placeholder="roupa específica (opcional, ex: jaleco de cientista)" />
+        <input type="text" id="outfit" placeholder="detalhe visual opcional (ex: com um relógio digital piscando)" />
       </div>
     </div>
-    <p class="sub" style="margin:6px 0 0">A imagem do personagem é gerada automaticamente com base
-    no tema/roteiro. Prefere subir sua própria imagem? <label style="display:inline;color:var(--accent);cursor:pointer">
+    <p class="sub" style="margin:6px 0 0">A imagem é gerada automaticamente com base
+    no tema/roteiro — é só um objeto de cena (rádio retrô), sem mascote. Prefere subir sua própria imagem? <label style="display:inline;color:var(--accent);cursor:pointer">
       <input type="checkbox" id="useUpload" style="width:auto" /> usar upload manual</label></p>
     <input type="file" id="character" accept="image/*" style="display:none;margin-top:8px" />
 
     <div class="row">
       <div>
-        <label>Estilo do canal</label>
+        <label>Formato do canal</label>
         <select id="channelKey"></select>
       </div>
       <div>
-        <label>Voz do personagem (Fish Audio)</label>
+        <label>Voz do narrador (Fish Audio)</label>
         <select id="voiceKey"></select>
       </div>
     </div>
 
-    <label>Tema do vídeo</label>
-    <input type="text" id="topic" placeholder="ex: novo golpe do pix, algoritmo do tiktok..." />
+    <label>Tema do vídeo (GTA 6)</label>
+    <input type="text" id="topic" placeholder="ex: novo trailer, comparação com GTA 5, data de lançamento..." />
 
     <div class="row">
       <div>
@@ -330,7 +462,7 @@ function renderStylesForCharacter() {
   const styles = characterKey
     ? availableStyles.filter(s => s.personagemKey === characterKey)
     : availableStyles;
-  select.innerHTML = `<option value="">Automático — escolher pelo personagem/tema</option>` +
+  select.innerHTML = `<option value="">Automático — Guia Vice City pelo tema</option>` +
     styles.map(s => `<option value="${s.key}">${s.nomeFormato || s.personagem} — ${s.arquetipo}</option>`).join('');
   if (styles.some(s => s.key === currentValue)) select.value = currentValue;
 }
@@ -502,7 +634,7 @@ document.getElementById('btnAutoPilot').addEventListener('click', async () => {
     document.getElementById('backgrounds').value = (data.selectedBackgrounds || []).join(', ');
     document.getElementById('outfit').value = data.outfitHint || '';
 
-    status.textContent = `AutoPilot concluído ✅\n\nTema: ${data.topic}\nPerfil: ${data.channelKey}\nPersonagem: ${data.characterKey}\n\nViral score: ${data.analysis.score}/100 — ${data.analysis.isViral ? 'viral' : data.analysis.isMagnetic ? 'magnético' : 'fraco'}`;
+    status.textContent = `AutoPilot concluído ✅\n\nTema: ${data.topic}\nPerfil: ${data.channelKey}\nElemento visual: ${data.characterKey}\n\nViral score: ${data.analysis.score}/100 — ${data.analysis.isViral ? 'viral' : data.analysis.isMagnetic ? 'magnético' : 'fraco'}`;
 
     const preview = document.getElementById('preview');
     preview.src = data.videoUrl;
@@ -535,7 +667,7 @@ document.getElementById('btnGenerate').addEventListener('click', async () => {
   const channelKey = document.getElementById('channelKey').value;
 
   if ((useUpload && !characterFile) || !voiceKey || !backgrounds || !script) {
-    return alert('Preenche: personagem, voz, fundos e roteiro (gere no passo 1 ou escreva o seu)');
+    return alert('Preenche: elemento visual, voz, fundos e roteiro (gere no passo 1 ou escreva o seu)');
   }
 
   const form = new FormData();

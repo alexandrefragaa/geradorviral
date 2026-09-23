@@ -1,43 +1,13 @@
 {
+  "_nota": "App restrito a um único canal: Guia Vice City — tutoriais e guias de estratégia sobre GTA 6 (economia, rotas, dicas). Sem personagens cartunizados — o 'elemento visual' é um objeto de cena (rádio retrô), não um mascote.",
   "_arquetiposDePersonagem": {
-    "caotico": {
-      "descricao": "burro mas confiante, decisões absurdas, humor físico, muito memorável",
+    "sem_personagem": {
+      "descricao": "sem host cartunizado — só um elemento gráfico de identidade visual, estética Vice City/synthwave",
       "personagens": {
-        "peter_griffin": { "nome": "Peter Griffin", "descricaoVisual": "homem de meia-idade e obeso, com pele clara e cabelo castanho curto. Ele tem um rosto marcante caracterizado por óculos redondos de armação preta e um queixo duplo muito proeminente e arredondado. O seu visual clássico consiste em uma camisa social branca com as mangas compridas dobradas até os cotovelos, que fica sempre por dentro de uma calça comprida bege. Ele usa um cinto preto com fivela dourada para segurar as calças e finaliza o seu estilo com sapatos sociais marrons" },
-        "homer_simpson": { "nome": "Homer Simpson", "descricaoVisual": "homem de meia-idade, obeso e de pele amarela brilhante. Ele é quase totalmente calvo, mantendo apenas dois fios de cabelo finos no topo da cabeça e uma linha de cabelo em formato de M, acima de cada orelha. O seu rosto se destaca por uma barba por fazer de cor marrom-clara ao redor da boca e olhos grandes e redondos. O seu vestuário padrão é extremamente simples, composto por uma camisa polo branca de mangas curtas e uma calça jeans azul-clara reta. Ele completa o seu visual clássico com sapatos sociais pretos e redondos" },
-        "stan_smith": { "nome": "Stan Smith", "descricaoVisual": "homem branco de queixo quadrado, cabelo loiro curto, camisa social azul clara, gravata vermelha" }
-      }
-    },
-    "explosivo": {
-      "descricao": "maldoso, manipulador, sarcasmo pesado, humor ácido, sem filtro",
-      "personagens": {
-        "cartman": { "nome": "Cartman", "descricaoVisual": "criança da quarta série, obesa, de pele clara e com um rosto redondo. O seu visual de inverno é marcante e consiste em uma jaqueta vermelha brilhante e uma calça marrom-escura frouxa. Ele esconde o seu cabelo castanho sob uma touca azul-turquesa com um pomo amarelo no topo e uma borda amarela dobrada. Ele calça luvas amarelas nas mãos e sapatos pretos simples nos pés. O seu corpo corpulento e formato circular o tornam um dos personagens mais fáceis de reconhecer na animação." },
-        "stewie": { "nome": "Stewie Griffin", "descricaoVisual": "bebê de um ano com uma cabeça única em formato de bola de futebol americano. Ele tem pele clara, apenas três fios de cabelo pretos perfeitamente alinhados no topo da cabeça e olhos grandes e expressivos. O seu visual clássico é composto por um macacão vermelho de jardineira com dois grandes botões amarelos na frente, vestido por cima de uma camisa de mangas compridas amarela. Ele finaliza o seu estilo infantil com sapatos sociais pretos e redondos, um contraste divertido para a sua mente brilhante e planos de dominação mundial" },
-        "angelica": { "nome": "Angelica Pickles", "descricaoVisual": "menina loira de cabelo preso, vestido roxo, expressão manipuladora" }
-      }
-    },
-    "calmo": {
-      "descricao": "confiante, sarcástico, no controle da situação, nunca se abala",
-      "personagens": {
-        "pernalonga": { "nome": "Pernalonga", "descricaoVisual": "coelho antropomórfico alto, magro e de pelagem predominantemente cinza e branca. Ele possui o corpo e as longas orelhas na cor cinza, enquanto o seu focinho, a parte interna das orelhas, a barriga e as bochechas são brancos. O seu rosto é marcado por olhos grandes e expressivos, grandes dentes incisivos superiores proeminentes e três fios de bigode pretos de cada lado do focinho. Ele não costuma usar roupas, mas está quase sempre calçando luvas brancas nas mãos e segurando uma cenoura pela metade com a outra mão" },
-        "rick_sanchez": { "nome": "Rick Sanchez", "descricaoVisual": "cientista idoso, magro e de pele extremamente pálida, quase acinzentada. O seu traço mais marcante é o cabelo espetado em formato de múltiplos cones na cor azul-clara, acompanhado por uma única sobrancelha unida da mesma cor. Ele veste uma camiseta azul-clara simples por baixo de um jaleco branco de laboratório aberto, que vai até a altura dos joelhos. A sua vestimenta se completa com uma calça comprida marrom-escura presa por um cinto marrom com fivela dourada, além de sapatos sociais pretos. Ele frequentemente exibe uma expressão de desdém e uma mancha de saliva verde nos lábios" },
-        "kronk": { "nome": "Kronk", "descricaoVisual": "homem musculoso alto, cabelo preto black-power, expressão tranquila e um pouco confusa" }
-      }
-    },
-    "engracado": {
-      "descricao": "muito burro, falas absurdas, reações exageradas, caos constante",
-      "personagens": {
-        "bob_esponja": { "nome": "Bob Esponja", "descricaoVisual": "Bob Esponja Calça Quadrada é uma esponja do mar retangular, amarela e cheia de furos verdes-escuros. Ele tem olhos grandes, redondos e azuis com três cílios longos em cada um, além de bochechas rosadas com sardas e dois dentes incisivos proeminentes que saltam da boca. O seu visual clássico é o uniforme de trabalho: uma camisa social branca de mangas curtas com uma gravata vermelha pontuda e uma calça quadrada marrom presa por um cinto preto. Ele completa o seu estilo com meias brancas cano alto que possuem listras azuis e vermelhas, além de sapatos sociais pretos brilhantes e redondos" },
-        "patrick": { "nome": "Patrick Estrela", "descricaoVisual": "estrela-do-mar rosa, bermuda verde e roxa floral, expressão bobalhona" },
-        "gaguinho": { "nome": "Gaguinho (Porco Pica-Pau)", "descricaoVisual": "porquinho antropomórfico rosa, jaqueta azul, sem calça, expressão nervosa" }
-      }
-    },
-    "marcante": {
-      "descricao": "inteligência exagerada ou visual/vocal muito único, ego gigante, situações absurdas",
-      "personagens": {
-        "gumball": { "nome": "Gumball", "descricaoVisual": "gato antropomórfico de doze anos com pele inteiramente azul-clara e uma cabeça grande e arredondada. Ele possui olhos pretos ovais e expressivos, além de três bigodes pretos bem finos de cada lado das bochechas e orelhas triangulares no topo da cabeça. O seu visual é extremamente simples e casual, consistindo em um suéter de tricô bege com gola e punhos marrons sobrepostos. Ele usa uma calça comprida jeans cinza-escura e reta, e não costuma calçar sapatos ou meias, deixando as suas patas traseiras azuis totalmente à mostra" },
-        "darwin": { "nome": "Darwin", "descricaoVisual": "peixinho laranja antropomórfico com pernas, olhos grandes redondos, sorriso largo" },
-        "dexter": { "nome": "Dexter", "descricaoVisual": "menino ruivo baixinho, óculos redondos, jaleco de laboratório branco, luvas roxas" }
+        "narrador_gta6": {
+          "nome": "Guia Vice City",
+          "descricaoVisual": "um rádio boombox retrô estilo anos 80, apoiado sobre o capô de um carro clássico à noite, com luzes neon rosa e ciano refletindo na lataria, silhueta de palmeira desfocada ao fundo e céu em degradê de pôr do sol. Sem nenhuma figura humana, animal ou personagem de desenho — só o objeto iluminado, estética Vice City/synthwave"
+        }
       }
     }
   },
@@ -60,6 +30,17 @@
       "SEGURA ESSA",
       "CHEGOU A HORA"
     ],
+    "ganchosCuriosidade": {
+      "descricao": "Ganchos tipo pergunta/curiosidade pra CTR. Diferente dos ganchosAbertura (frases prontas), esses são templates: o trecho {completar} precisa ser preenchido pela IA com um fato específico do tema daquele roteiro — nunca deixar o {completar} literal no vídeo final.",
+      "templates": [
+        "VOCÊ SABIA QUE NA ECONOMIA DE GTA VI {completar}",
+        "VOCÊ SABIA QUE NO GTA VI {completar}",
+        "GTA VI NÃO É SÓ VICE CITY, {completar}",
+        "VOCÊ SABIA QUE {completar}",
+        "GTA VI NÃO É SÓ {completar}",
+        "QUASE NINGUÉM SABE QUE NO GTA VI {completar}"
+      ]
+    },
     "condicionais": [
       "se você não tá sabendo de nada",
       "se você não sabe disso",
@@ -75,37 +56,24 @@
       "vai começar mais um episódio do"
     ]
   },
-  "peter_conspira": {
-    "personagem": "Peter Griffin",
-    "arquetipo": "caotico",
-    "personagemKey": "peter_griffin",
-    "nomeFormato": "Jornal do Peter",
-    "tom": "conspiração / teoria proibida / 'acorda pra realidade'",
-    "temas": ["controle mental", "mídia e algoritmos", "manipulação psicológica", "segredos escondidos da sociedade"],
-    "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o jornal do Peter",
-    "cta1_crescimento": "segue o Peter",
-    "cta2_monetizacao": "aprende a fazer vídeo assim também, link na bio"
-  },
-  "jornal_do_cartman": {
-    "personagem": "Cartman",
-    "arquetipo": "explosivo",
-    "personagemKey": "cartman",
-    "nomeFormato": "Jornal do Cartman",
-    "tom": "humor ácido + 'notícia' absurda da internet",
-    "temas": ["fofoca da internet", "polêmicas virais", "sátira de comportamento humano"],
-    "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o Jornal do Cartman",
-    "cta1_crescimento": "segue o Jornal do Cartman",
-    "cta2_monetizacao": "aprende a fazer vídeos iguais aos meus, link na bio"
-  },
-  "jornal_do_rick": {
-    "personagem": "Rick Sanchez",
-    "arquetipo": "calmo",
-    "personagemKey": "rick_sanchez",
-    "nomeFormato": "Jornal do Rick",
-    "tom": "cientista sarcástico expondo 'verdade' científica/conspiratória",
-    "temas": ["ciência esquisita", "teorias sobre a realidade/multiverso", "crítica sarcástica à sociedade"],
-    "bordao": "Se você não tá sabendo de nada, já se prepara que vai começar o Jornal do Rick",
-    "cta1_crescimento": "segue pra não perder a próxima descoberta",
-    "cta2_monetizacao": "aprende a fazer vídeo assim, link na bio"
+  "central_gta6": {
+    "personagem": "Guia Vice City",
+    "arquetipo": "sem_personagem",
+    "personagemKey": "narrador_gta6",
+    "nomeFormato": "Guia Vice City",
+    "tom": "guia passo a passo / dica de especialista — narração confiante e didática, tipo quem já dominou o jogo ensinando o atalho",
+    "temas": [
+      "como dominar a economia de GTA 6 (formas de ganhar dinheiro rápido)",
+      "rotas secretas e atalhos no mapa",
+      "estratégias exclusivas pra missões e heists",
+      "dicas de customização de veículos e propriedades",
+      "localização de itens, colecionáveis e easter eggs jogáveis",
+      "comparação de estratégias com GTA V",
+      "erros comuns que iniciantes cometem e como evitar"
+    ],
+    "bordao": "Se você não tá ligado em nada, já se prepara que vai começar o Guia Vice City",
+    "cta1_crescimento": "clica no botão de gostei agora mesmo pra apoiar o canal",
+    "cta2_monetizacao": "se inscreve no Guia Vice City e ativa o sininho de notificações pra não perder os próximos tutoriais",
+    "ctaFinalTexto": "Segue o Guia Vice City pra não perder nada! Se esse guia completo passo a passo clareou a sua visão de como dominar a economia de GTA 6, clica no botão de gostei agora mesmo para apoiar o canal! Se inscreve no Guia Vice City e ativa o sininho de notificações para não perder os próximos tutoriais, rotas secretas e estratégias exclusivas que nós vamos trazer todos os dias e eu vou ficando por aqui, um grande abraço e até o próximo vídeo!"
   }
 }
